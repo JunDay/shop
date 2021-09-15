@@ -137,4 +137,65 @@ public class MemberDao {
 		// 3-5. ArrayList Member로된 회원 목록 리턴
 		return memberList;
 	}
+	
+	/* 4. [관리자] 회원목록의 총 수 출력 */
+	public int totalMemberCount() throws ClassNotFoundException, SQLException {
+		int totalCount = 0 ;
+		//db접속 메소드 호출
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		//쿼리생성, 실행
+		String sql = "SELECT count(*) FROM member";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		
+		ResultSet rs= stmt.executeQuery();
+		while(rs.next()) {
+			totalCount = rs.getInt("count(*)");
+		}
+		
+		return totalCount;
+	}
+	
+	/* 5. [관리자] 검색된 회원의 목록 출력 */
+	public ArrayList<Member> selectMemberListAllBySearchMemberId(int beginRow, int rowPerPage, String searchMemberId) throws ClassNotFoundException, SQLException{
+		// 5-0. 반환해줄 Member list 선언
+		ArrayList<Member> memberList = new ArrayList<Member>();
+		
+		// 5-1. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 5-2. 검색된 아이디에 해당되는 모든 회원 목록을 출력하는 쿼리 생성
+		String sql = "SELECT member_no memberNo, member_id memberId, member_level memberLevel, member_name memberName, member_age memberAge, member_gender memberGender, update_date updateDate, create_date createDate FROM member WHERE member_id LIKE ? ORDER BY create_date DESC LIMIT ?, ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, "%"+searchMemberId+"%");
+		stmt.setInt(2, beginRow);
+		stmt.setInt(3, rowPerPage);
+		
+		System.out.println("*[Debug] " + stmt +" <-- MemberDao.selectMemberListAllBySearchMemberId()");	
+		
+		// 5-3. 쿼리 실행 및 데이터 변환(rs -> list)
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			Member member = new Member();
+			member.setMemberNo(Integer.parseInt(rs.getString("memberNo")));
+			member.setMemberId(rs.getString("memberId"));
+			member.setMemberName(rs.getString("memberName"));
+			member.setMemberAge(Integer.parseInt(rs.getString("memberAge")));
+			member.setMemberGender(rs.getString("memberGender"));
+			member.setUpdateDate(rs.getString("updateDate"));
+			member.setCreateDate(rs.getString("createDate"));
+			memberList.add(member);
+		}
+		
+		// 5-4. 사용한 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 5-5. ArrayList Member로된 회원 목록 리턴
+		return memberList;
+	}
 }

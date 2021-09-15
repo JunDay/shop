@@ -20,6 +20,13 @@
 		return;
 	}
 	
+	// 0. 검색어
+	String searchMemberId = "";
+	if(request.getParameter("searchMemberId") != null){
+		searchMemberId = request.getParameter("searchMemberId");
+	}
+	System.out.println("*[Debug] " + searchMemberId +" <-- selectMemberList.jsp/searchMemberId");
+	
 	// 1. 현재 페이지 설정
 	int currentPage = 1;
 	
@@ -34,7 +41,15 @@
 	int beginRow = (currentPage-1)*ROW_PER_PAGE;
 	
 	MemberDao memberDao = new MemberDao();
-	ArrayList<Member> memberList = memberDao.selectMemberListAllByPage(beginRow, ROW_PER_PAGE);
+	
+	// 2. 검색어에 따른 
+	ArrayList<Member> memberList = null;
+	if(searchMemberId.equals("") == true){ // 검색어가 없는 경우
+		memberList = memberDao.selectMemberListAllByPage(beginRow, ROW_PER_PAGE);
+	} else { // 검색어가 있는 경우
+		memberList = memberDao.selectMemberListAllBySearchMemberId(beginRow, ROW_PER_PAGE, searchMemberId);
+	}
+
 %>
 
 <!DOCTYPE html>
@@ -53,6 +68,7 @@
 		<thead>
 			<tr>
 				<td>memberNo</td>
+				<td>memberId</td>
 				<td>memberLevel</td>
 				<td>memberName</td>
 				<td>memberGender</td>
@@ -67,6 +83,7 @@
 			%>
 					<tr>
 						<td><%=m.getMemberNo()%></td>
+						<td><%=m.getMemberId()%></td>
 						<td>
 							<%=m.getMemberLevel()%>
 							<%
@@ -92,22 +109,9 @@
 		</tbody>
 	</table>
 <%
-	// 1. 전체 행의 수
-	int totalCount = 0;
-	
-	// 2. DB 연결
-	DBUtil dbUtil = new DBUtil();
-	Connection conn = dbUtil.getConnection();
-	
-	// 3. 전체 데이터의 개수를 알아내는 쿼리 작성 및 실행
-	PreparedStatement stmt = conn.prepareStatement("SELECT count(*) FROM member");
-	ResultSet rs = stmt.executeQuery();
-	
-	// 3-1. totalCount 대입
-	if(rs.next()) {
-		totalCount = rs.getInt("COUNT(*)");
-	}
-	System.out.println("*[Debug] " + totalCount +" <-- selectMemberList.jsp/totalCount");
+	// 1. 총 회원의 수
+	int totalCount = memberDao.totalMemberCount();
+	System.out.println("*[Debug] " + totalCount +" <-- selectMemberList.jsp/totalCount | from memberDao.totalMemberCount");
 	
 	// 4. 마지막 페이지 수
 	int lastPage = totalCount / ROW_PER_PAGE;
@@ -131,7 +135,7 @@
 	// 8. 이전 버튼 출력
 	if(startPage > displayPage){
 %>
-	<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage-displayPage%>">이전</a>
+	<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage-displayPage%>&serchMemberId=<%=searchMemberId%>">이전</a>
 <%
 	}
 
@@ -139,11 +143,11 @@
 	for(int i=startPage; i<=endPage; i++) {
 		if(endPage<lastPage){
 	%>
-		<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>"><%=i%></a>
+		<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>&serchMemberId=<%=searchMemberId%>"><%=i%></a>
 <%
 		} else if(endPage>lastPage){
 %>
-		<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>"><%=i%></a>
+		<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>&serchMemberId=<%=searchMemberId%>"><%=i%></a>
 <%	
 			break;
 		}
@@ -152,10 +156,17 @@
 	// 10. 다음 버튼
 	if(endPage < lastPage){
 %>
-	<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage+displayPage%>">다음</a>
+	<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage+displayPage%>&serchMemberId=<%=searchMemberId%>">다음</a>
 <%
 	}
 %>
 </div>
+	<!--  -->
+	<div>
+		<form action="<%=request.getContextPath()%>/admin/selectMemberList.jsp" method="get">
+			memberId : <input type="text" name="searchMemberId">
+			<button type="submit">검색</button>
+		</form>
+	</div>
 </body>
 </html>
