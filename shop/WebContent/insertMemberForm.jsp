@@ -7,6 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div>
+	<!-- start : submenu include -->
+	<div>
+		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+	</div>
 	<%
 	// 0. 방어 코드 : 로그인된 세션이 있는 경우 접근 불가
 	System.out.println("**[Debug] insertMemberForm.jsp | Start");
@@ -32,5 +37,6 @@
 		</div>
 		<button type="submit">회원가입</button>
 	</form>
+</div>
 </body>
 </html>

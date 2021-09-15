@@ -17,6 +17,11 @@
 <title>로그인 화면</title>
 </head>
 <body>
+<div>
+	<!-- start : submenu include -->
+	<div>
+		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+	</div>
 	<h1>로그인</h1>
 	<form method="post" action="./loginAction.jsp">
 		<div>memberId : </div>
@@ -25,5 +30,6 @@
 		<div><input type="password" name="memberPw"></div>
 		<div><button type="submit">로그인</button></div>
 	</form>
+</div>
 </body>
 </html>

@@ -5,13 +5,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import commons.*;
 import vo.Member;
 
 public class MemberDao {
 	
-	/* 1. 회원가입 */
+	/* 1. [비회원] 회원가입 */
 	public void insertMember(Member member) throws ClassNotFoundException, SQLException {
 	      // 1-0. 회원가입을 위해 입력받은 정보들 디버깅
 		  System.out.println("**[Debug] MemberDao/insertMember() | Start");
@@ -34,6 +35,7 @@ public class MemberDao {
 	      stmt.setString(3, member.getMemberName());
 	      stmt.setInt(4, member.getMemberAge());
 	      stmt.setString(5, member.getMemberGender());
+	      System.out.println("*[Debug] " + stmt +" <-- MemberDao.insertMebmer()");
 	      
 	      // 1-3. 쿼리 실행
 	      int row = stmt.executeUpdate();
@@ -51,7 +53,7 @@ public class MemberDao {
 	      	  return;
 	}
 	
-	/* 2. 회원 로그인 */
+	/* 2. [비회원] 회원 로그인 */
 	public Member login(Member member) throws ClassNotFoundException, SQLException {
 		System.out.println("**[Debug] MemberDao/login() | Start");
 		
@@ -73,6 +75,8 @@ public class MemberDao {
 		stmt.setString(1, member.getMemberId());
 		stmt.setString(2, member.getMemberPw());
 		
+		System.out.println("*[Debug] " + stmt +" <-- MemberDao.login()");		
+		
 		// 2-3. 쿼리 실행 및 데이터 변환(rs -> Member)
 		ResultSet rs = stmt.executeQuery();
 		
@@ -90,5 +94,47 @@ public class MemberDao {
 		conn.close();
 		
 		return null;
+	}
+	
+	/* 3. [관리자] 회원목록출력 */
+	public ArrayList<Member> selectMemberListAllByPage(int beginRow, int rowPerPage) throws ClassNotFoundException, SQLException{
+		// 3-0. 반환해줄 Member list 선언
+		ArrayList<Member> memberList = new ArrayList<Member>();
+		
+		// 3-1. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 3-2. 모든 회원 목록을 출력하는 쿼리 생성
+		String sql = "SELECT member_no memberNo, member_id memberId, member_level memberLevel, member_name memberName, member_age memberAge, member_gender memberGender, update_date updateDate, create_date createDate FROM member ORDER BY create_date DESC LIMIT ?, ?";
+		
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, beginRow);
+		stmt.setInt(2, rowPerPage);
+		
+		System.out.println("*[Debug] " + stmt +" <-- MemberDao.selectMemberListAllByPage()");	
+		
+		// 3-3. 쿼리 실행 및 데이터 변환(rs -> list)
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next()) {
+			Member member = new Member();
+			member.setMemberNo(Integer.parseInt(rs.getString("memberNo")));
+			member.setMemberId(rs.getString("memberId"));
+			member.setMemberName(rs.getString("memberName"));
+			member.setMemberAge(Integer.parseInt(rs.getString("memberAge")));
+			member.setMemberGender(rs.getString("memberGender"));
+			member.setUpdateDate(rs.getString("updateDate"));
+			member.setCreateDate(rs.getString("createDate"));
+			memberList.add(member);
+		}
+		
+		// 3-4. 사용한 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 3-5. ArrayList Member로된 회원 목록 리턴
+		return memberList;
 	}
 }
