@@ -8,11 +8,9 @@
 </head>
 <body>
 	<%
-	// 방어 코드
-	// 로그인 한 상태에서는 들어올 수 없다.
+	// 0. 방어 코드 : 로그인된 세션이 있는 경우 접근 불가
 	System.out.println("**[Debug] insertMemberForm.jsp | Start");
 	if(session.getAttribute("loginmMmber") != null){
-		// 다시 브라우저에게 다른 곳을 요청하도록 하는 메서드, 어디로 보내는 것이 아니다
 		response.sendRedirect("./index.jsp");
 		return;
 	}

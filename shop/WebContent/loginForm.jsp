@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	// 인증 방어 코드 : 로그인 전에만 페이지 열람 가능
-	// session.getAttribute("loginMember") --> null
 	System.out.println("**[Debug] loginForm.jsp | Start");
 	
 	if(session.getAttribute("loginMember") != null) {
