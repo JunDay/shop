@@ -2,10 +2,12 @@
 
 <div>
 	<ul>
-		<li><a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp">회원관리</a></li>
-		<li><a href="">admin Menu2</a></li>
-		<li><a href="">admin Menu3</a></li>
-		<li><a href="">admin Menu4</a></li>
-		<li><a href="">admin Menu5</a></li>
+		<li><a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp">[회원 관리]</a></li>
+		<li><a href="<%=request.getContextPath()%>/admin/">[전자책 카테고리 관리]</a></li>
+		<li><a href="<%=request.getContextPath()%>/admin/">[전자책 관리]</a></li>
+		<li><a href="<%=request.getContextPath()%>/admin/">[주문 관리]</a></li>
+		<li><a href="<%=request.getContextPath()%>/admin/">[상품평 관리]</a></li>
+		<li><a href="<%=request.getContextPath()%>/admin/">[공지게시판 관리]</a></li>
+		<li><a href="<%=request.getContextPath()%>/admin/">[Q&A 게시판 관리]</a></li>
 	</ul>
 </div>

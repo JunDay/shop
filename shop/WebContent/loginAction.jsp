@@ -27,7 +27,7 @@
 	
 	// 3-1. 실행 결과 출력
 	if(returnMebmer == null) {
-		System.out.println("**[Debug] loginAction.jsp | 로그인 실패");
+		System.out.println("***[Debug] loginAction.jsp | 로그인 실패");
 		response.sendRedirect("./loginForm.jsp");
 		return;
 	} else {

@@ -16,7 +16,7 @@
 	// 0. 방어 코드 : 로그인된 세션이 있는 경우 접근 불가
 	System.out.println("**[Debug] insertMemberForm.jsp | Start");
 	if(session.getAttribute("loginmMmber") != null){
-		response.sendRedirect("./index.jsp");
+		response.sendRedirect(request.getContextPath()+"/index.jsp");
 		return;
 	}
 	%>

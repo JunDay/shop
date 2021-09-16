@@ -3,13 +3,12 @@
 <%@ page import="dao.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.sql.*" %>
-<%@ page import="commons.*" %>
 
 <%
 	// 0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
 	System.out.println("**[Debug] selectMemberList.jsp | Start");
-	
+	System.out.println(request.getParameter("searchMemberId"));
 	// 0-1. 세션 정보를 가져온다.
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	
@@ -20,20 +19,19 @@
 		return;
 	}
 	
-	// 0. 검색어
+	// 1. 검색어 설정
 	String searchMemberId = "";
 	if(request.getParameter("searchMemberId") != null){
 		searchMemberId = request.getParameter("searchMemberId");
 	}
 	System.out.println("*[Debug] " + searchMemberId +" <-- selectMemberList.jsp/searchMemberId");
 	
-	// 1. 현재 페이지 설정
+	// 2. 현재 페이지 설정
 	int currentPage = 1;
-	
-	// 1-1. 현재 페이지 값 가져오기
 	if(request.getParameter("currentPage") != null){
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
+	System.out.println("*[Debug] " + currentPage +" <-- selectMemberList.jsp/currentPage");
 	
 	// 1-2. 한 페이지당 보여줄 값 설정(상수)
 	final int ROW_PER_PAGE = 10; // 상수 <- 스네이크 표현식으로
@@ -44,6 +42,7 @@
 	
 	// 2. 검색어에 따른 
 	ArrayList<Member> memberList = null;
+	
 	if(searchMemberId.equals("") == true){ // 검색어가 없는 경우
 		memberList = memberDao.selectMemberListAllByPage(beginRow, ROW_PER_PAGE);
 	} else { // 검색어가 있는 경우
@@ -74,6 +73,9 @@
 				<td>memberGender</td>
 				<td>updateDate</td>
 				<td>createDate</td>
+				<td>등급수정</td>
+				<td>비밀번호수정</td>
+				<td>강제탈퇴</td>
 				
 			</tr>
 		</thead>
@@ -82,7 +84,7 @@
 				for(Member m : memberList){
 			%>
 					<tr>
-						<td><%=m.getMemberNo()%></td>
+						<td><a href="<%=request.getContextPath()%>/selectMemberOne.jsp?memberNo=<%=m.getMemberNo()%>"><%=m.getMemberNo()%></a></td>
 						<td><%=m.getMemberId()%></td>
 						<td>
 							<%=m.getMemberLevel()%>
@@ -102,6 +104,18 @@
 						<td><%=m.getMemberGender()%></td>
 						<td><%=m.getUpdateDate()%></td>
 						<td><%=m.getCreateDate()%></td>
+						<td>
+							<!-- 특정 회원의 등급 수정 : 회원의 고유 키를 이용 -->
+							<a href="<%=request.getContextPath()%>/admin/updateMemberLevelForm.jsp?memberNo=<%=m.getMemberNo()%>">등급수정</a>
+						</td>
+						<td>
+							<!-- 특정 회원의 비밀번호 수정 : 회원의 고유 키를 이용 -->
+							<a href="<%=request.getContextPath()%>/admin/updateMemberPwForm.jsp?memberNo=<%=m.getMemberNo()%>">비밀번호수정</a>
+						</td>
+						<td>
+							<!-- 특정 회원을 강제 탈퇴 : 회원의 고유 키를 이용 -->
+							<a href="<%=request.getContextPath()%>/admin/deleteMember.jsp?memberNo=<%=m.getMemberNo()%>">강제탈퇴</a>
+						</td>
 					</tr>
 			<%
 				}
@@ -110,7 +124,7 @@
 	</table>
 <%
 	// 1. 총 회원의 수
-	int totalCount = memberDao.totalMemberCount();
+	int totalCount = memberDao.totalMemberCount(searchMemberId);
 	System.out.println("*[Debug] " + totalCount +" <-- selectMemberList.jsp/totalCount | from memberDao.totalMemberCount");
 	
 	// 4. 마지막 페이지 수
@@ -140,8 +154,8 @@
 	}
 
 	// 9. 페이지 번호 버튼
-	for(int i=startPage; i<=endPage; i++) {
-		if(endPage<lastPage){
+	for(int i=startPage; i<=endPage; i++) { // 1, 10 | 10<7 -> F | 10>7
+		if(i<lastPage){
 	%>
 		<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>&serchMemberId=<%=searchMemberId%>"><%=i%></a>
 <%
