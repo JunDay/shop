@@ -21,9 +21,26 @@
 	}
 	%>
 	<h1>회원가입</h1>
-	<form method="post" action="./insertMemberAction.jsp">
+	
+	<%
+		String memberIdCheck = "";
+		if(request.getParameter("memberIdCheck") != null){
+			memberIdCheck = request.getParameter("memberIdCheck");
+		}
+	%>
+	<div><%=request.getParameter("idCheckResult") %></div>
+	<!-- memberId가 사용가능한지 확인 폼 -->
+	<form action="<%=request.getContextPath()%>/selectMemberIdCheckAction.jsp" method="post">
+		<div>
+			회원 아이디 : <input type="text" name="memberIdCheck">
+			<button type="submit">아이디 중복 검사</button>
+		</div>
+	</form>
+	
+	<!-- 회원가입 폼 -->
+	<form method="post" action="<%=request.getContextPath()%>/insertMemberAction.jsp">
 		<div>memberId : </div>
-		<div><input type="text" name="memberId"></div>
+		<div><input type="text" name="memberId" readonly="readonly" value="<%=memberIdCheck%>"></div>
 		<div>memberPw : </div>
 		<div><input type="password" name="memberPw"></div>
 		<div>memberName : </div>

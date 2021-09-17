@@ -13,17 +13,19 @@
 <body>
 <div class="container">
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		<a class="navbar-brand btn btn-secondary" href="./index.jsp">메인</a>
+		<a class="navbar-brand btn btn-secondary" href="./index.jsp">Main</a>
 		<!-- start : submenu include -->
 		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
 		<!-- end : submenu include -->
-		
+		<div>
 	<%
 		if(session.getAttribute("loginMember") == null) {
 	%>
 			<!-- 로그인 전  -->
-			<div type="button" class="btn"><a href="<%=request.getContextPath()%>/loginForm.jsp">로그인</a></div>
-			<div type="button" class="btn"><a href="<%=request.getContextPath()%>/insertMemberForm.jsp">회원가입</a></div><!-- insertMemberAction.jsp -->
+			<div>
+				<a class="btn btn-info" href="<%=request.getContextPath()%>/loginForm.jsp">로그인</a>
+				<a class="btn btn-info" href="<%=request.getContextPath()%>/insertMemberForm.jsp">회원가입</a>
+			</div>
 	<%		
 		} else {
 			Member loginMember = (Member)session.getAttribute("loginMember");
@@ -39,7 +41,7 @@
 			}
 		}
 	%>
-		
+		</div>
 	</nav>
 	<div class="jumbotron">
 		<h1>인덱스 페이지</h1>

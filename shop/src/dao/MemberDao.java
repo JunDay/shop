@@ -12,6 +12,33 @@ import vo.Member;
 
 public class MemberDao {
 	
+	/* [회원] 회원가입 시 아이디 중복 확인 */
+	public String selectMemberId(String memberIdCheck) throws ClassNotFoundException, SQLException {
+		
+		// 0. 확인된 memebrId를 반환해주기 위한 변수
+		String memberId = null;
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 입력된 memberId와 같은 memberId가 있는지 확인, 중복 확인
+		String sql = "SELECT member_id memberId FROM member WHERE member_id=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, memberIdCheck);
+
+		// 쿼리 실행
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			memberId = rs.getString("memberId");
+		}
+		
+		rs.close();
+		stmt.close();
+		
+		return memberId;
+	}
+	
 	/* 1. [비회원] 회원가입 */
 	public void insertMember(Member member) throws ClassNotFoundException, SQLException {
 	      // 1-0. 회원가입을 위해 입력받은 정보들 디버깅
@@ -346,4 +373,6 @@ public class MemberDao {
 		// 조회된 Member의 객체를 반환
 		return retrunMember;
 	}
+	
+	
 }
