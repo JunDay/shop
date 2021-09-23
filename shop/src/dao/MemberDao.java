@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import commons.*;
-import vo.Member;
+import vo.*;
 
 public class MemberDao {
 	
