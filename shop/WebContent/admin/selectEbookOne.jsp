@@ -5,7 +5,7 @@
 <%
 	//0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("**[Debug] selectEbookOne.jsp | Start");
+	System.out.println("+[Debug] \"Started\" | admin/selectEbookOne.jsp");
 	
 	// 0-1. 세션 정보 조회
 	Member loginMember = (Member)session.getAttribute("loginMember");
@@ -16,6 +16,7 @@
 		return;
 	}
 	
+	// 0-3. 선택한 ebook의 ebookNo 확인
 	int ebookNo = Integer.parseInt(request.getParameter("ebookNo"));
 %>
 
@@ -33,6 +34,7 @@
 	<!-- adminMenu.jsp End -->
 	
 	<%
+		// 1. 선택한 ebook의 상세정보 조회
 		EbookDao ebookDao = new EbookDao();
 		Ebook ebook = ebookDao.selectEbookOne(ebookNo);
 	%>

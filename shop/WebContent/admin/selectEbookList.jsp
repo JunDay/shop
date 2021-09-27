@@ -2,19 +2,13 @@
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
 <%@ page import="java.util.*" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+
 <%
 	// 0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("**[Debug] selectEbookList.jsp | Start");
+	System.out.println("+[Debug] \"Started\" | admin/selectEbookList.jsp");
 	
-	// 0-1. 세션 정보 조회
+	// 0-1. 로그인된 세션 정보 조회
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	
 	// 0-2. 방어 코드 : 로그인 정보가 없거나 관리자가 아니면 접속 불가
@@ -23,7 +17,7 @@
 		return;
 	}
 	
-	// 0-3. 페이지 번호 확인 
+	// 0-3. 페이지 번호 확인
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) { 
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
@@ -44,6 +38,14 @@
 	CategoryDao categoryDao = new CategoryDao();
 	ArrayList<Category> categoryList = categoryDao.selectCategoryList();
 %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
 	<!-- adminMenu.jsp Start -->
 	<div>
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
@@ -107,25 +109,25 @@
 	<%
 	// 6-1. 총 ebook의 수
 	int totalCount = ebookDao.totalEbookCount(ebookCategory);
-	System.out.println("*[Debug] " + totalCount +" <-- selectEbookList.jsp/totalCount | from ebookDao.totalEbookCount()");
+	System.out.println(" [Debug] totalCount : \""+totalCount +"\" | selectEbookList.jsp | RETRUNED BY ebookDao.totalEbookCount()");
 	
 	// 6-2. 마지막 페이지 수
 	int lastPage = totalCount / ROW_PER_PAGE;
 	if(totalCount % ROW_PER_PAGE != 0) {
 		lastPage+=1;
 	}
-	System.out.println("*[Debug] " + lastPage +" <-- selectEbookList.jsp/lastPage");
+	System.out.println(" [Debug] lastPage : \""+lastPage +"\" | selectEbookList.jsp");
 	
 	// 6-3. 화면에 보여질 페이지 번호의 갯수
 	int displayPage = 10;
 	
 	// 6-4. 화면에 보여질 시작 페이지 번호
 	int startPage = ((currentPage - 1) / displayPage) * displayPage + 1;
-	System.out.println("*[Debug] " + startPage +" <-- selectEbookList.jsp/startPage");
+	System.out.println(" [Debug] startPage : \""+startPage +"\" | selectEbookList.jsp");
 	
 	// 6-5. 화면에 보여질 마지막 페이지 번호
 	int endPage = startPage + displayPage - 1;
-	System.out.println("*[Debug] " + endPage +" <-- selectEbookList.jsp/endPage");
+	System.out.println(" [Debug] endPage : \""+endPage +"\" | selectEbookList.jsp");
 	
 	
 	// 6-6. 이전 버튼 출력

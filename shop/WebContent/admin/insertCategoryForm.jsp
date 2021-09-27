@@ -1,36 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<!-- start : submenu include -->
-	<div>
-		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
-	</div>
-	
-	<%
+
+<%
 	// 0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("**[Debug] selectCategoryList.jsp | Start");
+	System.out.println("+[Debug] \"Started\" | admin/insertCategoryForm.jsp");
 	
-	// 0-1. 세션 정보를 가져온다.
+	// 0-1. 로그인된 세션 정보 조회
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	
 	// 0-2. 방어 코드 : 로그인 정보가 없거나 관리자가 아니면 접속 불가
-		// 로그인 정보가 null 이거나 memberLevel이 1보다 낮으면
 	if(loginMember == null || loginMember.getMemberLevel() < 1){
 		response.sendRedirect(request.getContextPath()+"/index.jsp");
 		return;
 	}
-	%>
-	<h1>회원가입</h1>
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<title>insertCategoryForm.jsp</title>
+</head>
+<div class="container">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+	<!-- start : submenu include -->
+	<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+	<!-- end : submenu include -->
+	</nav>
+	
+	<div class="jumbotron">
+		<h1>[관리자] 카테고리 추가</h1>
+		<p>상품 카테고리 추가</p>
+	</div>
+	
+	<h1>카테고리 추가</h1>
 	
 	<%
+		String categoryCheckResult = "";
+		if(request.getParameter("categoryCheckResult") != null){
+			categoryCheckResult = request.getParameter("categoryCheckResult");
+		}
 		String categoryNameCheck = "";
 		if(request.getParameter("categoryNameCheck") != null){
 			categoryNameCheck = request.getParameter("categoryNameCheck");
@@ -62,6 +76,6 @@
 		</div>
 		<button type="submit">회원가입</button>
 	</form>
-
+</div>
 </body>
 </html>

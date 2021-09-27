@@ -5,7 +5,7 @@
 <%
 	//0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("**[Debug] selectEbookList.jsp | Start");
+	System.out.println("+[Debug] \"Started\" | admin/updateEbookImgForm.jsp");
 	
 	// 0-1. 세션 정보 조회
 	Member loginMember = (Member)session.getAttribute("loginMember");
@@ -16,6 +16,7 @@
 		return;
 	}
 	
+	// 0-3. 선택한 ebook의 ebookNo 확인
 	int ebookNo = Integer.parseInt(request.getParameter("ebookNo"));
 %>
 

@@ -2,18 +2,7 @@
 <%@ page import="vo.*" %>
 <%@ page import="dao.*" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<!-- start : submenu include -->
-	<div>
-		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
-	</div>
-	<%
+<%
 	// 0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
 	System.out.println("**[Debug] updateMemberLevelForm.jsp | Start");
@@ -34,36 +23,74 @@
 	// 2. member의 다른 정보 조회
 	MemberDao memberDao = new MemberDao();
 	Member member = memberDao.selectMemberOne(memberNo);
-	%>
-	<h1>[관리자] 회원 Level 수정</h1>
-	<form method="post" action="<%=request.getContextPath()%>/admin/updateMemberLevelAction.jsp">
-		<div>memberNo : </div>
-		<div><input type="text" name="memberNo" value="<%=member.getMemberNo()%>" readonly></div>
-		<div>memberId : </div>
-		<div><input type="text" name="memberId" value="<%=member.getMemberId()%>" readonly></div>
-		<div>New memberPw : </div>
-		<div><input type="password" name="memberPw" value="****" readonly></div>
-		<div>New memberLevel : </div>
-		<div>
-			<select name="memberLevel">
-				<option value="0">0 일반회원</option>
-				<option value="1">1 관리자</option>
-			</select>
-		</div>
-		<div>memberName : </div>
-		<div><input type="text" name="memberName" value="<%=member.getMemberName()%>" readonly></div>
-		<div>memberAge : </div>
-		<div><input type="text" name="memberAge" value="<%=member.getMemberAge()%>" readonly></div>
-		<div>memberGender : </div>
-		<div><input type="text" name="memberGender" value="<%=member.getMemberGender()%>" readonly></div>
-		<div>updateDate : </div>
-		<div><input type="text" name="updateDate" value="<%=member.getUpdateDate()%>" readonly></div>
-		<div>createDate : </div>
-		<div><input type="text" name="createDate" value="<%=member.getCreateDate()%>" readonly></div>
-		<div>memberNo : </div>
-		<div><input type="text" name="memberNo" value="<%=memberNo%>" readonly></div>
-		<button type="submit">수정</button>
-	</form>
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<title>updateMemberLevelForm.jsp</title>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+	<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+	<!-- start : submenu include -->
+	<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
+	<!-- end : submenu include -->
+	</nav>
 	
+	<div class="jumbotron">
+		<h1>[관리자] 회원 Level 수정</h1>
+		<p>관리자가 회원의 Level을 수정가능</p>
+	</div>
+		<form method="post" action="<%=request.getContextPath()%>/admin/updateMemberLevelAction.jsp">
+		<table class="table table-striped">
+			<tr>
+				<td colspan="2"><h2><%=member.getMemberName()%>님 상세정보</h2></td>
+			</tr>
+			<tr>
+				<td>memberNo</td>
+				<td><input type="text" name="memberNo" value="<%=member.getMemberNo()%>" readonly="readonly"></td>
+			</tr>
+			<tr>
+				<td>memberId</td>
+				<td><%=member.getMemberId()%></td>
+			</tr>
+			<tr>
+				<td>memberLevel</td>
+				<td>
+					<select name="memberLevel">
+						<option value="0">0 일반회원</option>
+						<option value="1">1 관리자</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>memberName</td>
+				<td><%=member.getMemberName()%></td>
+			</tr>
+			<tr>
+				<td>memberAge</td>
+				<td><%=member.getMemberAge()%></td>
+			</tr>
+			<tr>
+				<td>memberGender</td>
+				<td><%=member.getMemberGender()%></td>
+			</tr>
+			<tr>
+				<td>updateDate</td>
+				<td><%=member.getUpdateDate()%></td>
+			</tr>
+			<tr>
+				<td>createDate</td>
+				<td><%=member.getCreateDate()%></td>
+			</tr>
+		</table>
+		<a class="btn btn-info" href="<%=request.getContextPath()%>/selectMemberOne.jsp?memberNo=<%=member.getMemberNo()%>">뒤로가기</a>
+		<button class="btn btn-success" type="submit">수정</button>
+	</form>
+</div>
 </body>
 </html>

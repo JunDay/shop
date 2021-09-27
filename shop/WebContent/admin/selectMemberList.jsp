@@ -7,9 +7,9 @@
 <%
 	// 0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("**[Debug] selectMemberList.jsp | Start");
-	System.out.println(request.getParameter("searchMemberId"));
-	// 0-1. 세션 정보를 가져온다.
+	System.out.println("+[Debug] \"Started\" | selectMemberList.jsp");
+	
+	// 0-1. 로그인된 세션 확인
 	Member loginMember = (Member)session.getAttribute("loginMember");
 	
 	// 0-2. 방어 코드 : 로그인 한 상태에서는 들어올 수 없다.
@@ -55,15 +55,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 목록</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<title>selectMemerList.jsp</title>
 </head>
 <body>
-<div>
-	<div>
+<div class="container">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+		<!-- start : submenu include -->
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<!-- end : submenu include -->
+	</nav>
+	
+	<div class="jumbotron">
+		<h1>[관리자] 회원목록 출력</h1>
+		<p>회원관리하기 위해 회원목록 출력하는 페이지</p>
 	</div>
-	<h1>회원 목록</h1>
-	<table border="1">
+	
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<td>memberNo</td>
@@ -73,9 +82,6 @@
 				<td>memberGender</td>
 				<td>updateDate</td>
 				<td>createDate</td>
-				<td>등급수정</td>
-				<td>비밀번호수정</td>
-				<td>강제탈퇴</td>
 				
 			</tr>
 		</thead>
@@ -104,18 +110,6 @@
 						<td><%=m.getMemberGender()%></td>
 						<td><%=m.getUpdateDate()%></td>
 						<td><%=m.getCreateDate()%></td>
-						<td>
-							<!-- 특정 회원의 등급 수정 : 회원의 고유 키를 이용 -->
-							<a href="<%=request.getContextPath()%>/admin/updateMemberLevelForm.jsp?memberNo=<%=m.getMemberNo()%>">등급수정</a>
-						</td>
-						<td>
-							<!-- 특정 회원의 비밀번호 수정 : 회원의 고유 키를 이용 -->
-							<a href="<%=request.getContextPath()%>/admin/updateMemberPwForm.jsp?memberNo=<%=m.getMemberNo()%>">비밀번호수정</a>
-						</td>
-						<td>
-							<!-- 특정 회원을 강제 탈퇴 : 회원의 고유 키를 이용 -->
-							<a href="<%=request.getContextPath()%>/admin/deleteMember.jsp?memberNo=<%=m.getMemberNo()%>">강제탈퇴</a>
-						</td>
 					</tr>
 			<%
 				}
@@ -125,31 +119,31 @@
 <%
 	// 1. 총 회원의 수
 	int totalCount = memberDao.totalMemberCount(searchMemberId);
-	System.out.println("*[Debug] " + totalCount +" <-- selectMemberList.jsp/totalCount | from memberDao.totalMemberCount");
-	
+	System.out.println(" [Debug] totalCount : \""+totalCount +"\" | selectMemberList.jsp | RETRUNED BY memberDao.totalMemberCount()");
+
 	// 4. 마지막 페이지 수
 	int lastPage = totalCount / ROW_PER_PAGE;
 	if(totalCount % ROW_PER_PAGE != 0) {
 		lastPage+=1;
 	}
-	System.out.println("*[Debug] " + lastPage +" <-- selectMemberList.jsp/lastPage");
+	System.out.println(" [Debug] lastPage : \""+lastPage +"\" | selectMemberList.jsp");
 	
 	// 5. 화면에 보여질 페이지 번호의 갯수
 	int displayPage = 10;
 	
 	// 6. 화면에 보여질 시작 페이지 번호
 	int startPage = ((currentPage - 1) / displayPage) * displayPage + 1;
-	System.out.println("*[Debug] " + startPage +" <-- selectMemberList.jsp/startPage");
+	System.out.println(" [Debug] startPage : \""+startPage +"\" | selectMemberList.jsp");
 	
 	// 7. 화면에 보여질 마지막 페이지 번호
 	int endPage = startPage + displayPage - 1;
-	System.out.println("*[Debug] " + endPage +" <-- selectMemberList.jsp/endPage");
+	System.out.println(" [Debug] endPage : \""+endPage +"\" | selectMemberList.jsp");
 	
 	
 	// 8. 이전 버튼 출력
 	if(startPage > displayPage){
 %>
-	<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage-displayPage%>&serchMemberId=<%=searchMemberId%>">이전</a>
+	<a class="btn btn-dark" href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage-displayPage%>&serchMemberId=<%=searchMemberId%>">이전</a>
 <%
 	}
 
@@ -157,11 +151,11 @@
 	for(int i=startPage; i<=endPage; i++) { // 1, 10 | 10<7 -> F | 10>7
 		if(i<lastPage){
 	%>
-		<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>&serchMemberId=<%=searchMemberId%>"><%=i%></a>
+		<a class="btn btn-secondary" href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>&serchMemberId=<%=searchMemberId%>"><%=i%></a>
 <%
 		} else if(endPage>lastPage){
 %>
-		<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>&serchMemberId=<%=searchMemberId%>"><%=i%></a>
+		<a class="btn btn-secondary" href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=i%>&serchMemberId=<%=searchMemberId%>"><%=i%></a>
 <%	
 			break;
 		}
@@ -170,17 +164,17 @@
 	// 10. 다음 버튼
 	if(endPage < lastPage){
 %>
-	<a href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage+displayPage%>&serchMemberId=<%=searchMemberId%>">다음</a>
+	<a class="btn btn-dark" href="<%=request.getContextPath()%>/admin/selectMemberList.jsp?currentPage=<%=startPage+displayPage%>&serchMemberId=<%=searchMemberId%>">다음</a>
 <%
 	}
 %>
-</div>
+
 	<!--  -->
-	<div>
-		<form action="<%=request.getContextPath()%>/admin/selectMemberList.jsp" method="get">
-			memberId : <input type="text" name="searchMemberId">
-			<button type="submit">검색</button>
-		</form>
-	</div>
+	<form class="form-inline" style="width:30%;" action="<%=request.getContextPath()%>/admin/selectMemberList.jsp" method="get">
+		<label style="font-size:larger;" for="searchMemberId">memberId :</label>
+		<input class="form-control" type="text" name="searchMemberId">
+		<button class="btn btn-success" type="submit">검색</button>
+	</form>
+</div>
 </body>
 </html>

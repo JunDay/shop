@@ -5,7 +5,7 @@
 <%
 	// 0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("**[Debug] updateMemberPwAction.jsp | Start");
+	System.out.println("+[Debug] \"Started\" | updateMemberPwAction.jsp");
 	
 	// 0-1. 유효성 검사 : 누락된 memberPw 값 검사
 	if(request.getParameter("memberPw") == null || request.getParameter("memberPw").equals("")){
@@ -17,8 +17,8 @@
 	int memberNo = Integer.parseInt(request.getParameter("memberNo"));
 	String memberPw = request.getParameter("memberPw");
 	
-	System.out.println("*[Debug] " + memberNo + " <-- updateMemberPwAction.jsp/memberNo");
-	System.out.println("*[Debug] " + memberPw + " <-- updateMemberPwAction.jsp/memberPw");
+	System.out.println(" [Debug] memberNo : \""+memberNo +"\" | updateMemberPwAction.jsp FROM updateMemberPwForm.jsp");
+	System.out.println(" [Debug] memberPw : \""+memberPw +"\" | updateMemberPwAction.jsp FROM updateMemberPwForm.jsp");
 	
 	// 2. MemberDao에 있는 updateMemberPwByAdmin() 메서드를 위한 객체 생성
 	Member member = new Member();
@@ -31,6 +31,15 @@
 	MemberDao memberDao = new MemberDao();
 	memberDao.updateMemberPwByAdmin(member);
 	
+	
+	// 0-1. 로그인된 세션 확인
+	Member loginMember = (Member)session.getAttribute("loginMember");
+	
 	// 4. 이전 페이지로 이동
+	if(loginMember.getMemberLevel() < 1){
+		response.sendRedirect(request.getContextPath()+"/selectMemberOne.jsp?memberNo="+memberNo);
+		return;
+	}
 	response.sendRedirect(request.getContextPath()+"/admin/selectMemberList.jsp");
+	return;
 %>
