@@ -14,6 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <title>shop loginForm.jsp | 로그인 화면</title>
 </head>
@@ -27,17 +28,33 @@
 	</nav>
 	<h1 style="font-size:50px;">Login</h1>
 	<div style="width:30%;">
-	<form method="post" action="./loginAction.jsp">
+	
+	<form id="loginForm" method="post" action="./loginAction.jsp">
 	<div class="form-group">
 		<div style="font-size:larger;">memberId</div>
-		<div><input class="form-control" type="text" name="memberId"></div>
+		<div><input class="form-control" type="text" id="memberId" name="memberId" value=""></div>
 	</div>
 	<div class="form-group">
 		<div style="font-size:larger;">memberPw</div>
-		<div><input class="form-control" type="password" name="memberPw"></div>
+		<div><input class="form-control" type="password" id="memberPw" name="memberPw" value=""></div>
 	</div>
-		<div><button class="btn btn-info" type="submit">로그인</button></div>
+		<div><button class="btn btn-info" type="button" id="loginBtn">로그인</button></div>
 	</form>
+	
+	<script>
+	$('#loginBtn').click(function(){
+	   // 버턴을 click했을때
+	   if($('#memberId').val() == '') { // id 공백이면
+			alert('memberId를 입력하세요');
+			return;
+		} else if($('#memberPw').val() == '') { // pw 공백이면
+			alert('memberPw를 입력하세요');
+			return;
+		} else {
+			$('#loginForm').submit(); // <button type="button"> -> <button type="submit">
+		}
+	});
+	</script>
 	</div>
 </div>
 </body>

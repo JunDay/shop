@@ -23,7 +23,7 @@ public class EbookDao {
 		Connection conn = dbUtil.getConnection();
 		
 		// 1. 
-		String sql="SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_img ebookImg, ebook_price ebookPrice FROM ebook ORDER BY create_date DESC LIMIT 0, 5";
+		String sql="SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_img ebookImg, ebook_price ebookPrice, ebook_author ebookAuthor FROM ebook ORDER BY create_date DESC LIMIT 0, 5";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		
 		System.out.println(" [Debug] stmt : \""+stmt +"\" | EbookDao.selectNewEbookList()");
@@ -36,6 +36,7 @@ public class EbookDao {
 			ebook.setEbookTitle(rs.getString("ebookTitle"));
 			ebook.setEbookImg(rs.getString("ebookImg"));
 			ebook.setEbookPrice(rs.getInt("ebookPrice"));
+			ebook.setEbookAuthor(rs.getString("ebookAuthor"));
 			list.add(ebook);
 		}
 		
@@ -129,7 +130,7 @@ public class EbookDao {
 		Connection conn = dbUtil.getConnection();
 		
 		// 1. ebookNo에 해당하는 ebook에 대한 상세정보 조회 쿼리
-		String sql="SELECT ebook_no ebookNo, ebook_img ebookImg FROM ebook WHERE ebook_no=?";
+		String sql="SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice, ebook_img ebookImg  FROM ebook WHERE ebook_no=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, ebookNo);
 		
@@ -140,6 +141,8 @@ public class EbookDao {
 		if(rs.next()) {
 			ebook = new Ebook();
 			ebook.setEbookNo(rs.getInt("ebookNo"));
+			ebook.setEbookTitle(rs.getString("ebookTitle"));
+			ebook.setEbookPrice(rs.getInt("ebookPrice"));
 			ebook.setEbookImg(rs.getString("ebookImg"));
 		}
 		

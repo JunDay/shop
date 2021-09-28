@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <title>Insert title here</title>
 </head>
 <body>
@@ -38,22 +40,46 @@
 	</form>
 	
 	<!-- 회원가입 폼 -->
-	<form method="post" action="<%=request.getContextPath()%>/insertMemberAction.jsp">
+	<form id="joinForm" method="post" action="<%=request.getContextPath()%>/insertMemberAction.jsp">
 		<div>memberId : </div>
-		<div><input type="text" name="memberId" readonly="readonly" value="<%=memberIdCheck%>"></div>
+		<div><input type="text" id="memberId" name="memberId" readonly="readonly" value="<%=memberIdCheck%>"></div>
 		<div>memberPw : </div>
-		<div><input type="password" name="memberPw"></div>
+		<div><input type="password" id="memberPw" name="memberPw"></div>
 		<div>memberName : </div>
-		<div><input type="text" name="memberName"></div>
+		<div><input type="text" id="memberName" name="memberName"></div>
 		<div>memberAge : </div>
-		<div><input type="text" name="memberAge"></div>
+		<div><input type="text" id="memberAge" name="memberAge"></div>
 		<div>memberGender : </div>
 		<div>
-			<input type="radio" name="memberGender" value="남">남
-			<input type="radio" name="memberGender" value="여">여
+			<input type="radio" class="memberGender" name="memberGender" value="남">남
+			<input type="radio" class="memberGender" name="memberGender" value="여">여
 		</div>
-		<button type="submit">회원가입</button>
+		<button id="btn" type="button">회원가입</button>
 	</form>
+	
+		<script>
+		// 버튼을 클릭헀을 때
+		$('#btn').click(function(){
+			if($('#memberId').val() == ''){
+				alert('ID를 입력하세요.');
+			}
+			if($('#memberPw').val() == '') {
+				alert('PW를 입력하세요.');
+			}
+			if($('#memberName').val() == '') {
+				alert('Name를 입력하세요.');
+			}
+			if($('#memberAge').val() == '') {
+				alert('Age를 입력하세요.');
+			}
+			
+			let memberGender = $('.memberGender:checked'); // 클래스타입으로 받아오면 무조건 배열이다.
+			if(memberGender.length == 0){
+				alert('Gender를 입력하세요.');
+			}
+			$('#joinForm').submit();
+		});
+	</script>
 </div>
 </body>
 </html>

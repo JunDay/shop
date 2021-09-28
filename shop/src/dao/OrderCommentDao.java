@@ -2,12 +2,107 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import commons.DBUtil;
 import vo.*;
+import java.util.*;
 
 public class OrderCommentDao {
+	
+	/* [공통] 댓글의 총 수 출력 */
+	public int totalCommentCount() throws ClassNotFoundException, SQLException {
+		int totalCount = 0 ;
+		//db접속 메소드 호출
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT COUNT(*) FROM order_comment";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		
+		ResultSet rs= stmt.executeQuery();
+		
+		while(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+		
+		return totalCount;
+	}
+	
+	/* [공통] 후기를 조회 */
+	public ArrayList<OrderComment> selectCommentList(int beginRow, int rowPerPage, int ebookNo) throws ClassNotFoundException, SQLException{
+		// list라는 리스트를 사용하기 위해 생성
+		ArrayList<OrderComment> list = new ArrayList<OrderComment>();
+		
+		// 매개변수 값을 디버깅
+		System.out.println(beginRow + "<--- OrderCommentDao.selectCommentList parem : beginRow");
+		System.out.println(rowPerPage + "<--- OrderCommentDao.selectCommentList parem : rowPerPage");
+		System.out.println(ebookNo + "<--- OrderCommentDao.selectCommentList parem : ebookNo");
+		
+		// DB 실행
+		// dbUtil 객체 생성
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		String sql = "SELECT order_score orderScore, order_comment_content orderCommentContent, create_date createDate FROM order_comment WHERE ebook_no=? ORDER BY create_date DESC LIMIT ?,?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, ebookNo);
+		stmt.setInt(2, beginRow);
+		stmt.setInt(3, rowPerPage);
+		
+		// 디버깅 코드 : 쿼리내용과 표현식의 파라미터값 확인가능
+		System.out.println(stmt + "<--- stmt");
+		
+		// 데이터 가공 (자료구조화)
+		// ResultSet이라는 특수한 타입에서 ArrayList라는 일반화된 타입으로 변환(가공)
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			// orderComment 객체 생성 후 저장
+			OrderComment orderComment = new OrderComment();
+			orderComment.setOrderScore (rs.getInt("orderScore"));
+			orderComment.setOrderCommentContent (rs.getString("orderCommentContent"));
+			orderComment.setCreateDate (rs.getString("createDate"));
+			list.add(orderComment);
+		}
+		// 종료
+		rs.close();
+		stmt.close();
+		conn.close();
+				
+		//list를 return
+		return list;
+	}
+	
+	/* [공통] 상품의 평균 점수 출력 */
+	public double selectOrderScoreAvg(int ebookNo) throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | OrderDao.insertOrderComment()");
+		
+		// 0. 싱품의 평점을 리턴하기 위한 변수 선언
+		double avgScore = 0;
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. 상품의 점수를 평균내는 쿼리 생성
+		String sql = "SELECT AVG(order_score) av FROM order_comment WHERE ebook_no=? ORDER BY ebook_no";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, ebookNo);
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | OrderCommentDao.updateEbookImg()");
+		
+		ResultSet rs = stmt.executeQuery();
+		
+		if(rs.next()) {
+			avgScore = rs.getDouble("av");
+		}
+		
+		// 3. 사용한 자원 반환
+		stmt.close();
+		conn.close();
+		
+		return avgScore;
+	}
 	
 	/* [공통] 상품후기 입력 */
 	public void insertOrderComment(OrderComment orderComment) throws ClassNotFoundException, SQLException {
