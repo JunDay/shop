@@ -8,6 +8,7 @@ public class Qna {
 	private String qnaContent;
 	private String qnaSecret;
 	private int memberNo;
+	private String memberName;
 	private String createDate;
 	private String updateDate;
 	
@@ -46,6 +47,12 @@ public class Qna {
 	}
 	public void setMemberNo(int memberNo) {
 		this.memberNo = memberNo;
+	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 	public String getCreateDate() {
 		return createDate;

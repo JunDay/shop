@@ -155,7 +155,7 @@ public class NoticeDao {
 	public Notice selectNoticeOne(int noticeNo) throws ClassNotFoundException, SQLException {
 		System.out.println("+[Debug] \"Started\" | NoticeDao.selectNoticerOne()");
 		
-		// 0. 리턴할 Notice List 생성
+		// 0. 리턴할 Notice 객체 생성
 		Notice notice = new Notice();
 		
 		// 0. DB 연결

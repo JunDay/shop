@@ -41,24 +41,34 @@
 	<table class="table table-borderless" width="90%">
 		<tr>
 		<%
-			NoticeDao noticeDao = new NoticeDao();
-			ArrayList<Notice> noticeList = noticeDao.selectNoticeList(0, 5);
+			QnaDao qnaDao = new QnaDao();
+			ArrayList<Qna> qnaList = qnaDao.selectQnaList(0, 10);
 			
 			
-			int pi=0;
-			for(Notice n : noticeList){
+			int i=0;
+			for(Qna q : qnaList){
 		%>
-			<td width="10%" align="center">[공지]</td>
-			<td width="5%" align="center"><%=n.getNoticeNo()%></td>
-			<td width="50%"><a href="<%=request.getContextPath()%>/selectNoticeOne.jsp?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></th>
-			<td width="15%" align="center"><%=n.getMemberName()%></td>
-			<td width="20%" align="center"><%=n.getCreateDate()%></td>
+			<td><%=q.getQnaNo()%></td>
+			<td><%=q.getQnaCategory()%></td>
+			<td><a href="<%=request.getContextPath()%>/selectQnaOne.jsp?qnaNo=<%=q.getQnaNo()%>"><%=q.getQnaTitle()%></a></td>
+			<td><%=q.getMemberName() %></td>
+			<td><%=q.getQnaSecret() %></td>
+			<td><%=q.getCreateDate() %></td>
 			<tr></tr>
 		<%
 			}
 		%>
 		</tr>
 	</table>
+	<form action="<%=request.getContextPath()%>/selectQnaList.jsp" method="get">
+		<select name="qnaCategory">
+			<option value="전자책관련">전자책관련</option>
+			<option value="개인정보관련">개인정보관련</option>
+			<option value="기타">기타</option>
+		</select>
+		searchQna : <input type="text" name="searchQna">
+		<button class="btn btn-success" type="submit">검색</button>
+	</form>
 </div>
 </body>
 </html>
