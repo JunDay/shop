@@ -57,7 +57,7 @@
 		<button id="btn" type="button">회원가입</button>
 	</form>
 	
-		<script>
+	<script>
 		// 버튼을 클릭헀을 때
 		$('#btn').click(function(){
 			if($('#memberId').val() == ''){

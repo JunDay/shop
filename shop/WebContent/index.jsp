@@ -3,12 +3,43 @@
 <%@ page import="dao.*" %>
 <%@ page import="java.util.*" %>
 
+<%
+	// 0-3. 페이지 번호 확인
+	int currentPage = 1;
+	if(request.getParameter("currentPage") != null) { 
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	// 0-4. 선택된 ebook 카테고리 확인
+	String ebookCategory = "";
+	if(request.getParameter("ebookCategory") != null) {
+		ebookCategory = request.getParameter("ebookCategory");
+	}
+	
+	// 1-1. 한 페이지당 보여줄 값 설정(상수)
+	final int ROW_PER_PAGE = 10;
+	// 1-2. 보여줄 시작 페이지 번호 설정
+	int beginRow = (currentPage-1)*ROW_PER_PAGE;
+	
+	// 2. 전체 상품 목록 조회 메서드 실행
+	EbookDao ebookDao = new EbookDao();
+	ArrayList<Ebook> ebookList = ebookDao.selectEbookList(currentPage, ROW_PER_PAGE);
+	
+	// 3. 인기 상품 목록 조회
+	ArrayList<Ebook> popularEbokList = ebookDao.selectPopularEbookList();
+	
+	// 4. 신상품 목록 조회
+	ArrayList<Ebook> newEbookList = ebookDao.selectNewEbookList();
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<title>shop index.jsp | 메인화면</title>
+<style>
+</style>
+<title>index.jsp</title>
 
 </head>
 <body>
@@ -58,43 +89,38 @@
 		</div>
 	</nav>
 	<div class="jumbotron">
-		<h1>인덱스 페이지</h1>
-		<p>이것저것</p>
+		<h1>[공통] 메인화면</h1>
+		<p>전자책에 대한 목록, 공지사항 출력</p>
 	</div>
+	<!-- 공지사항 목록 -->
+	<h2>공지사항</h2>
+	<table class="table table-borderless" width="90%">
+		<tr>
+		<%
+			NoticeDao noticeDao = new NoticeDao();
+			ArrayList<Notice> noticeList = noticeDao.selectNoticeList(0, 5);
+			
+			
+			int pi=0;
+			for(Notice n : noticeList){
+		%>
+			<td width="10%" align="center">[공지]</td>
+			<td width="5%" align="center"><%=n.getNoticeNo()%></td>
+			<td width="50%"><a href="<%=request.getContextPath()%>/selectNoticeOne.jsp?noticeNo=<%=n.getNoticeNo()%>"><%=n.getNoticeTitle()%></a></th>
+			<td width="15%" align="center"><%=n.getMemberName()%></td>
+			<td width="20%" align="center"><%=n.getCreateDate()%></td>
+			<tr></tr>
+		<%
+			}
+		%>
+		</tr>
+	</table>
 	<!-- 상품 목록 -->
-	<%
-		// 0-3. 페이지 번호 확인
-		int currentPage = 1;
-		if(request.getParameter("currentPage") != null) { 
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
-		
-		// 0-4. 선택된 ebook 카테고리 확인
-		String ebookCategory = "";
-		if(request.getParameter("ebookCategory") != null) {
-			ebookCategory = request.getParameter("ebookCategory");
-		}
-		
-		// 1-1. 한 페이지당 보여줄 값 설정(상수)
-		final int ROW_PER_PAGE = 10;
-		// 1-2. 보여줄 시작 페이지 번호 설정
-		int beginRow = (currentPage-1)*ROW_PER_PAGE;
-		
-		// 2. 전체 상품 목록 조회 메서드 실행
-		EbookDao ebookDao = new EbookDao();
-		ArrayList<Ebook> ebookList = ebookDao.selectEbookList(currentPage, ROW_PER_PAGE);
-		
-		// 3. 인기 상품 목록 조회
-		ArrayList<Ebook> popularEbokList = ebookDao.selectPopularEbookList();
-		
-		// 4. 신상품 목록 조회
-		ArrayList<Ebook> newEbookList = ebookDao.selectNewEbookList();
-	%>
 	<h2>신상품 목록</h2>
 	<table border="1">
 		<tr>
 		<%
-			int pi=0;
+			pi=0;
 			for(Ebook e : newEbookList){
 		%>
 			<td>

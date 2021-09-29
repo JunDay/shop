@@ -73,7 +73,7 @@
 						<td><%=oem.getEbook().getEbookTitle() %></td>
 						<td><%=oem.getOrder().getOrderPrice() %></td>
 						<td><%=oem.getOrder().getOrderDate() %></td>
-						<td><%=oem.getMemeber().getMemberId() %></td>
+						<td><%=oem.getMember().getMemberId() %></td>
 					</tr>
 			<%
 				}

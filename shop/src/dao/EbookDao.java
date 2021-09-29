@@ -130,7 +130,7 @@ public class EbookDao {
 		Connection conn = dbUtil.getConnection();
 		
 		// 1. ebookNo에 해당하는 ebook에 대한 상세정보 조회 쿼리
-		String sql="SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice, ebook_img ebookImg  FROM ebook WHERE ebook_no=?";
+		String sql="SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice, ebook_img ebookImg, ebook_author ebookAuthor  FROM ebook WHERE ebook_no=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, ebookNo);
 		
@@ -144,7 +144,14 @@ public class EbookDao {
 			ebook.setEbookTitle(rs.getString("ebookTitle"));
 			ebook.setEbookPrice(rs.getInt("ebookPrice"));
 			ebook.setEbookImg(rs.getString("ebookImg"));
+			ebook.setEbookAuthor(rs.getString("ebookAuthor"));
 		}
+		
+		System.out.println(" [Debug] ebookNo : \""+ebook.ebookNo +"\" | EbookDao.selectEbookOne()");
+		System.out.println(" [Debug] ebookTitle : \""+ebook.ebookTitle +"\" | EbookDao.selectEbookOne()");
+		System.out.println(" [Debug] ebookPrice : \""+ebook.ebookPrice +"\" | EbookDao.selectEbookOne()");
+		System.out.println(" [Debug] ebookImg : \""+ebook.ebookImg +"\" | EbookDao.selectEbookOne()");
+		System.out.println(" [Debug] ebookAuthor : \""+ebook.ebookAuthor +"\" | EbookDao.selectEbookOne()");
 		
 		// 3. 자원 반환
 		rs.close();
