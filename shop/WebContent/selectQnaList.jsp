@@ -40,6 +40,13 @@
 	<h2>공지사항</h2>
 	<table class="table table-borderless" width="90%">
 		<tr>
+			<th>qnaNo</th>
+			<th>qnaCategory</th>
+			<th>qnaTitle</th>
+			<th>memberName</th>
+			<th>qnaSecret</th>
+			<th>createDate</th>
+		<tr>
 		<%
 			QnaDao qnaDao = new QnaDao();
 			ArrayList<Qna> qnaList = qnaDao.selectQnaList(0, 10);

@@ -120,9 +120,9 @@ public class NoticeDao {
 		System.out.println("+[Debug] \"Started\" | NoticeDao.insertNotice()");
 		
 		// 0. Form에서 받은 내용 디버깅
-		System.out.println(" [Debug] getNoticeTitle : \""+notice.getNoticeTitle()+"\" | NoticeDao.insertNotice() FROM /admin/insertNoticeForm.jsp");
-		System.out.println(" [Debug] getNoticeContent : \"" + notice.getNoticeContent() +"\" | NoticeDao.insertNotice() FROM /admin/insertNoticeForm.jsp");
-		System.out.println(" [Debug] getMemberNo : \"" + notice.getMemberNo() +"\" | NoticeDao.insertNotice() FROM /admin/insertNoticeForm.jsp");
+		System.out.println(" [Debug] noticeTitle : \""+notice.getNoticeTitle()+"\" | NoticeDao.insertNotice() FROM /admin/insertNoticeForm.jsp");
+		System.out.println(" [Debug] noticeContent : \"" + notice.getNoticeContent() +"\" | NoticeDao.insertNotice() FROM /admin/insertNoticeForm.jsp");
+		System.out.println(" [Debug] memberNo : \"" + notice.getMemberNo() +"\" | NoticeDao.insertNotice() FROM /admin/insertNoticeForm.jsp");
 		
 		// 0. DB 연결
 		DBUtil dbUtil = new DBUtil();
@@ -135,7 +135,7 @@ public class NoticeDao {
 		stmt.setString(2, notice.getNoticeContent());
 		stmt.setInt(3, notice.getMemberNo());
 		
-		System.out.println(" [Debug] stmt : \""+stmt +"\" | NoticeDao.selectNoticerOne()");
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | NoticeDao.insertNotice()");
 		
 		// 2. 쿼리 실행
 		int row = stmt.executeUpdate();

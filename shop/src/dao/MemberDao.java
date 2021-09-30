@@ -12,6 +12,45 @@ import vo.*;
 
 public class MemberDao {
 	
+	/* [회원] 로그인한 회원의 비밀번호를 확인*/
+	public int memberPwCheck(String memberNo, String memberPw) throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | MemeberDao.memberPwCheck()");
+		
+		// 0. 쿼리의 실행값을 저장하기 위한 변수
+		String checkResult = null;
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. 멤버 Pw 확인 : 입력된 로그인된 회원의 정보와 입력한 Pw가 일치하는지 확인ㄴ하는 쿼리 생성
+		String sql = "SELECT member_pw memberPw FROM member WHERE member_no=? AND member_pw=PASSWORD(?)";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, memberNo);
+		stmt.setString(1, memberPw);
+
+		// 2. 쿼리 실행
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			checkResult = rs.getString("memberPw");
+		}
+		
+		// 3. 사용한 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 4. 실행 결과 디버깅
+			// 성공 : 1, memberNo과 memberPw가 서로 일치되어 조회된 테이블
+			// 실패 : 0, memberNo과 memberPw가 서로 일치하지 않아 아무것도 출력되지 않는다
+		if(checkResult != null) {
+			System.out.println(" [Debug] \"Succesful Finished\" | MemeberDao.memberPwCheck()");
+			return 1;
+		}
+		System.out.println("-[Debug] \"Failed\" | MemeberDao.memberPwCheck()");
+		return 0;
+	}
+	
 	/* [회원] 회원가입 시 아이디 중복 확인 */
 	public String selectMemberId(String memberIdCheck) throws ClassNotFoundException, SQLException {
 		

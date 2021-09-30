@@ -62,20 +62,25 @@
 		$('#btn').click(function(){
 			if($('#memberId').val() == ''){
 				alert('ID를 입력하세요.');
+				return;
 			}
 			if($('#memberPw').val() == '') {
 				alert('PW를 입력하세요.');
+				return;
 			}
 			if($('#memberName').val() == '') {
 				alert('Name를 입력하세요.');
+				return;
 			}
 			if($('#memberAge').val() == '') {
 				alert('Age를 입력하세요.');
+				return;
 			}
 			
 			let memberGender = $('.memberGender:checked'); // 클래스타입으로 받아오면 무조건 배열이다.
 			if(memberGender.length == 0){
 				alert('Gender를 입력하세요.');
+				return;
 			}
 			$('#joinForm').submit();
 		});
