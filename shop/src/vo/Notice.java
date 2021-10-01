@@ -2,6 +2,17 @@ package vo;
 
 /* 공지사항의 데이터들을 접근하기 위한 VO */
 // 공지사항 게시자의 이름을 추가로 삽입
+/* MariaDB
+CREATE TABLE `notice` (
+	`notice_no` INT(11) NOT NULL AUTO_INCREMENT,
+	`notice_title` VARCHAR(500) NOT NULL COLLATE 'utf8mb3_general_ci',
+	`notice_content` TEXT NOT NULL COLLATE 'utf8mb3_general_ci',
+	`member_no` INT(11) NOT NULL,
+	`create_date` DATETIME NOT NULL,
+	`update_date` DATETIME NOT NULL,
+	PRIMARY KEY (`notice_no`) USING BTREE
+)
+*/
 public class Notice {
 	private int noticeNo;
 	private String noticeTitle;
@@ -53,5 +64,12 @@ public class Notice {
 	}
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	
+	@Override
+	public String toString() {
+		return "Notice [noticeNo=" + noticeNo + ", noticeTitle=" + noticeTitle + ", noticeContent=" + noticeContent
+				+ ", memberNo=" + memberNo + ", memberName=" + memberName + ", createDate=" + createDate
+				+ ", updateDate=" + updateDate + "]";
 	}
 }

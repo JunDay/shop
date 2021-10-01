@@ -19,7 +19,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<title>selectNoticeOne.jsp</title>
+<title>selectQnaList.jsp</title>
 </head>
 <body>
 <div class="container">
@@ -38,6 +38,7 @@
 		<p>Q&A 목록 출력</p>
 	</div>
 	<h2>공지사항</h2>
+	<div align="right"><a class="btn btn-primary" href="<%=request.getContextPath()%>/insertQnaForm.jsp">Q&A작성</a></div>
 	<table class="table table-borderless" width="90%">
 		<tr>
 			<th>qnaNo</th>

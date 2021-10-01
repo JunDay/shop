@@ -1,7 +1,17 @@
 package vo;
 
-/* QnA의 댓글에 대한 데이터를 접근하기 위한 VO */
-// 추가적으로 memberName을 저장할 수 있는 항목 추가
+/* QnA의 댓글에 대한 데이터를 제공하기 위한 VO */
+// +추가적으로 memberName을 저장할 수 있는 항목 추가
+/* MariaDB
+CREATE TABLE `qna_comment` (
+	`qna_no` INT(11) NOT NULL,
+	`qna_comment_content` TEXT NOT NULL COLLATE 'utf8mb3_general_ci',
+	`member_no` INT(11) NOT NULL,
+	`create_date` DATETIME NOT NULL,
+	`update_date` DATETIME NOT NULL,
+	PRIMARY KEY (`qna_no`) USING BTREE
+)
+ * */
 public class QnaComment {
 	private int qnaNo;
 	private String qnaCommentContent;
@@ -45,5 +55,10 @@ public class QnaComment {
 	}
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	@Override
+	public String toString() {
+		return "QnaComment [qnaNo=" + qnaNo + ", qnaCommentContent=" + qnaCommentContent + ", memberNo=" + memberNo
+				+ ", memberName=" + memberName + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
 }

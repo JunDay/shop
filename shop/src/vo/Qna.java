@@ -1,6 +1,19 @@
 package vo;
 
-/* QnA의 데이터를 접근하기 위한 VO */
+/* QnA의 데이터를 제공하기 위한 VO */
+/* MariaDB
+CREATE TABLE `qna` (
+	`qna_no` INT(11) NOT NULL AUTO_INCREMENT,
+	`qna_category` ENUM('전자책관련','개인정보관련','기타') NOT NULL COLLATE 'utf8mb3_general_ci',
+	`qna_title` VARCHAR(500) NOT NULL COLLATE 'utf8mb3_general_ci',
+	`qna_content` TEXT NOT NULL COLLATE 'utf8mb3_general_ci',
+	`qna_secret` ENUM('Y','N') NOT NULL COLLATE 'utf8mb3_general_ci',
+	`member_no` INT(11) NOT NULL,
+	`create_date` DATETIME NOT NULL,
+	`update_date` DATETIME NOT NULL,
+	PRIMARY KEY (`qna_no`) USING BTREE
+)
+ */
 public class Qna {
 	private int qnaNo;
 	private String qnaCategory;
@@ -65,5 +78,11 @@ public class Qna {
 	}
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	@Override
+	public String toString() {
+		return "Qna [qnaNo=" + qnaNo + ", qnaCategory=" + qnaCategory + ", qnaTitle=" + qnaTitle + ", qnaContent="
+				+ qnaContent + ", qnaSecret=" + qnaSecret + ", memberNo=" + memberNo + ", memberName=" + memberName
+				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
 }

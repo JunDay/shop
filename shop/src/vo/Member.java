@@ -1,5 +1,21 @@
 package vo;
 
+/* 멤버의 데이터를 제공하기 위한 VO */
+/* MariaDB
+CREATE TABLE `member` (
+	`member_no` INT(11) NOT NULL AUTO_INCREMENT,
+	`member_id` VARCHAR(50) NOT NULL COLLATE 'utf8mb3_general_ci',
+	`member_pw` VARCHAR(200) NOT NULL COLLATE 'utf8mb3_general_ci',
+	`member_level` INT(11) NOT NULL,
+	`member_name` VARCHAR(50) NOT NULL COLLATE 'utf8mb3_general_ci',
+	`member_age` INT(11) NOT NULL,
+	`member_gender` ENUM('남','여') NOT NULL COLLATE 'utf8mb3_general_ci',
+	`update_date` DATETIME NOT NULL,
+	`create_date` DATETIME NOT NULL,
+	PRIMARY KEY (`member_no`) USING BTREE,
+	UNIQUE INDEX `member_id` (`member_id`) USING BTREE
+)
+ */
 public class Member {
 	private int memberNo;
 	private String memberId;
@@ -64,5 +80,12 @@ public class Member {
 	}
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
+	}
+	
+	@Override
+	public String toString() {
+		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw + ", memberLevel="
+				+ memberLevel + ", memberName=" + memberName + ", memberAge=" + memberAge + ", memberGender="
+				+ memberGender + ", updateDate=" + updateDate + ", createDate=" + createDate + "]";
 	}
 }
