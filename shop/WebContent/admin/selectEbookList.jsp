@@ -6,7 +6,7 @@
 <%
 	// 0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("+[Debug] \"Started\" | admin/selectEbookList.jsp");
+	System.out.println("+[Debug] \"Started\" | /admin/selectEbookList.jsp");
 	
 	// 0-1. 로그인된 세션 정보 조회
 	Member loginMember = (Member)session.getAttribute("loginMember");
@@ -43,14 +43,20 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<title>selectEbookList.jsp</title>
 </head>
-<body>
-	<!-- adminMenu.jsp Start -->
-	<div>
+<div class="container">
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+		<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+		<!-- start : submenu include -->
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<!-- end : submenu include -->
+	</nav>
+	<div class="jumbotron">
+		<h1>[관리자] 전자책 목록</h1>
+		<p>전자책 목록 표시</p>
 	</div>
-	<!-- adminMenu.jsp End -->
 	
 	<!-- 3. 카테고리 목록 출력, 카레고리 선택 후 검색 버튼 클릭 시 해당 카테고리 선택 -->
 	<form method="get" action="<%=request.getContextPath()%>/admin/selectEbookList.jsp">
@@ -64,7 +70,7 @@
 				}
 			%>
 		</select>
-		<button type="submit">검색</button>
+		<button type="submit" class="btn btn-success">검색</button>
 	
 	<!-- 4. ebook 목록 조회 -->
 	<%
@@ -80,7 +86,7 @@
 	%>
 	
 	<!-- 5. ebook 목록 출력 -->
-	<table class="table table-dark table-striped">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th>ebookNo</th>
@@ -106,6 +112,7 @@
 	</table>
 	</form>
 	<!-- 6. 페이징 출력 -->
+	<div align="center" style="margin:30px;">
 	<%
 	// 6-1. 총 ebook의 수
 	int totalCount = ebookDao.totalEbookCount(ebookCategory);
@@ -133,7 +140,7 @@
 	// 6-6. 이전 버튼 출력
 	if(startPage > displayPage){
 	%>
-		<a href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=startPage-displayPage%>&ebookCategory=<%=ebookCategory%>">이전</a>
+		<a class="btn btn-dark" href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=startPage-displayPage%>&ebookCategory=<%=ebookCategory%>">이전</a>
 	<%
 	}
 
@@ -141,11 +148,11 @@
 	for(int i=startPage; i<=endPage; i++) {
 		if(i<lastPage){
 	%>
-			<a href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=i%>&ebookCategory=<%=ebookCategory%>"><%=i%></a>
+			<a class="btn btn-secondary" href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=i%>&ebookCategory=<%=ebookCategory%>"><%=i%></a>
 	<%
 		} else if(endPage>lastPage){
 	%>
-			<a href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=i%>&ebookCategory=<%=ebookCategory%>"><%=i%></a>
+			<a class="btn btn-secondary" href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=i%>&ebookCategory=<%=ebookCategory%>"><%=i%></a>
 	<%	
 			break;
 		}
@@ -154,9 +161,11 @@
 	// 6-8. 다음 버튼
 	if(endPage < lastPage){
 	%>
-		<a href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=startPage+displayPage%>&ebookCategory=<%=ebookCategory%>">다음</a>
+		<a class="btn btn-dark" href="<%=request.getContextPath()%>/admin/selectEbookList.jsp?currentPage=<%=startPage+displayPage%>&ebookCategory=<%=ebookCategory%>">다음</a>
 	<%
 	}
 	%>
+	</div>
+</div>
 </body>
 </html>

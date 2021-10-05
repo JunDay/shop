@@ -60,8 +60,8 @@
 </head>
 <body>
 <div class="container">
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+		<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
 		<!-- start : submenu include -->
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 		<!-- end : submenu include -->
@@ -116,6 +116,7 @@
 			%>
 		</tbody>
 	</table>
+	<div align="center" style="margin:30px;">
 <%
 	// 1. 총 회원의 수
 	int totalCount = memberDao.totalMemberCount(searchMemberId);
@@ -168,13 +169,15 @@
 <%
 	}
 %>
-
+	</div>
 	<!--  -->
-	<form class="form-inline" style="width:30%;" action="<%=request.getContextPath()%>/admin/selectMemberList.jsp" method="get">
-		<label style="font-size:larger;" for="searchMemberId">memberId :</label>
-		<input class="form-control" type="text" name="searchMemberId">
+	<div align="center" style="margin:30px;">
+	<form action="<%=request.getContextPath()%>/admin/selectMemberList.jsp" method="get">
+		memberId : 
+		<input type="text" name="searchMemberId">
 		<button class="btn btn-success" type="submit">검색</button>
 	</form>
+	</div>
 </div>
 </body>
 </html>

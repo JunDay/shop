@@ -130,7 +130,7 @@ public class EbookDao {
 		Connection conn = dbUtil.getConnection();
 		
 		// 1. ebookNo에 해당하는 ebook에 대한 상세정보 조회 쿼리
-		String sql="SELECT ebook_no ebookNo, ebook_title ebookTitle, ebook_price ebookPrice, ebook_img ebookImg, ebook_author ebookAuthor  FROM ebook WHERE ebook_no=?";
+		String sql="SELECT ebook_no ebookNo, ebook_isbn ebookISBN, category_name categoryName, ebook_title ebookTitle, ebook_author ebookAuthor, ebook_company ebookCompany, ebook_page_count ebookPageCount, ebook_price ebookPrice, ebook_img ebookImg, ebook_summary ebookSummary, ebook_state ebookState, create_date createDate, update_date updateDate FROM ebook WHERE ebook_no=?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setInt(1, ebookNo);
 		
@@ -141,17 +141,19 @@ public class EbookDao {
 		if(rs.next()) {
 			ebook = new Ebook();
 			ebook.setEbookNo(rs.getInt("ebookNo"));
+			ebook.setEbookISBN(rs.getString("ebookISBN"));
+			ebook.setCategoryName(rs.getString("categoryName"));
 			ebook.setEbookTitle(rs.getString("ebookTitle"));
+			ebook.setEbookAuthor(rs.getString("ebookAuthor"));
+			ebook.setEbookCompany(rs.getString("ebookCompany"));
+			ebook.setEbookPageCount(rs.getInt("ebookPageCount"));
 			ebook.setEbookPrice(rs.getInt("ebookPrice"));
 			ebook.setEbookImg(rs.getString("ebookImg"));
-			ebook.setEbookAuthor(rs.getString("ebookAuthor"));
+			ebook.setEbookSummary(rs.getString("ebookSummary"));
+			ebook.setEbookState(rs.getString("ebookState"));
+			ebook.setCreateDate(rs.getString("createDate"));
+			ebook.setUpdateDate(rs.getString("updateDate"));
 		}
-		
-		System.out.println(" [Debug] ebookNo : \""+ebook.ebookNo +"\" | EbookDao.selectEbookOne()");
-		System.out.println(" [Debug] ebookTitle : \""+ebook.ebookTitle +"\" | EbookDao.selectEbookOne()");
-		System.out.println(" [Debug] ebookPrice : \""+ebook.ebookPrice +"\" | EbookDao.selectEbookOne()");
-		System.out.println(" [Debug] ebookImg : \""+ebook.ebookImg +"\" | EbookDao.selectEbookOne()");
-		System.out.println(" [Debug] ebookAuthor : \""+ebook.ebookAuthor +"\" | EbookDao.selectEbookOne()");
 		
 		// 3. 자원 반환
 		rs.close();
