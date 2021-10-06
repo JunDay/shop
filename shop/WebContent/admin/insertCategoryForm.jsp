@@ -28,8 +28,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<title>selectCategoryList.jsp</title>
+<title>insertCategoryList.jsp</title>
 </head>
 <body>
 <div class="container">
@@ -44,7 +45,7 @@
 		<h1>[관리자] 카테고리 추가</h1>
 		<p>카테고리를 추가하기 위한 페이지</p>
 	</div>
-	
+	<form id="insertCategoryForm" method="post" action="<%=request.getContextPath()%>/admin/insertCategoryAction.jsp">
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -54,18 +55,32 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td><input type="text" id="categoryNmae" name="categoryNmae"></td>
+				<td><input id="categoryName" name="categoryName" type="text"></td>
 				<td>
-					<select>
-						<option></option>
-						<option></option>
+					<select id="categoryState" name="categoryState">
+						<option value="Y">Y</option>
+						<option value="N">N</option>
 					</select>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<a class="btn btn-info" href="<%=request.getContextPath()%>/admin/adminIndex.jsp">뒤로가기</a>
-	<a class="btn btn-success" href="<%=request.getContextPath()%>/admin/insertCategoryForm.jsp">카테고리추가</a>
+	<button id="btn" class="btn btn-success" type="button">카테고리추가</button>
+	</form>
+	<script>
+		$('#btn').click(function(){
+			if($('#categoryName').val() == ''){
+				alert('categoryName를 입력하세요.');
+				return;
+			}
+			if($('#categoryState').val() == '') {
+				alert('categoryState를 선택하세요.');
+				return;
+			}
+			$('#insertCategoryForm').submit();
+		});
+	</script>
 </div>
 </body>
 </html>

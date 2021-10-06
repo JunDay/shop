@@ -94,7 +94,7 @@ public class CategoryDao {
 		 Connection conn = dbUtil.getConnection();
 		  
 		 // 1. 카테고리를 추가하기 위한 카테고리 정보 삽입 쿼리
-		 String sql = "INSERT INTO member(category_name, update_update, create_date, category_state) VALUES(?, NOW(), NOW(), ?)";
+		 String sql = "INSERT INTO category(category_name, category_state, create_date, update_date) VALUES(?, ?, NOW(), NOW())";
 		 PreparedStatement stmt = conn.prepareStatement(sql);
 		 stmt.setString(1, category.getCategoryName());
 		 stmt.setString(2, category.getCategoryState());

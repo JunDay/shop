@@ -58,7 +58,7 @@
 		<tr>
 			<th>ebookNo</th>
 			<td><%=ebook.getEbookNo()%></td>
-			<td align="center" colspan="3" rowspan="4"><img src="<%=request.getContextPath()%>/image/<%=ebook.getEbookImg()%>" width="250" height="250"></td>
+			<td align="center" colspan="2" rowspan="4"><img src="<%=request.getContextPath()%>/image/<%=ebook.getEbookImg()%>" width="250" height="250"></td>
 		</tr>
 		<tr>
 			<th>ebookISBN</th>
@@ -75,16 +75,24 @@
 		<tr>
 			<th>ebookTitle</th>
 			<td><%=ebook.getEbookTitle()%></td>
+			<th>ebookSummary</th>
+			<td><%=ebook.getEbookSummary()%></td>
 		</tr>
 		<tr>
 			<th>ebookAuthor</th>
 			<td><%=ebook.getEbookAuthor()%></td>
-			<th>createDate</th>
-			<td><%=ebook.getCreateDate()%></td>
+			<th>ebookPageCount</th>
+			<td><%=ebook.getEbookPageCount()%></td>
 		</tr>
 		<tr>
 			<th>ebookCompany</th>
 			<td><%=ebook.getEbookCompany()%></td>
+			<th>createDate</th>
+			<td><%=ebook.getCreateDate()%></td>
+		</tr>
+		<tr>
+			<th>ebookPrice</th>
+			<td><%=ebook.getEbookPrice()%></td>
 			<th>updateDate</th>
 			<td><%=ebook.getUpdateDate()%></td>
 		</tr>

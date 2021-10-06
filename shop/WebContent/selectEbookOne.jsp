@@ -55,34 +55,67 @@
 		<%
 			EbookDao ebookDao = new EbookDao();
 			Ebook ebook = ebookDao.selectEbookOne(ebookNo);
+			
+			OrderCommentDao orderCommentDao = new OrderCommentDao();
+			double avgScore = orderCommentDao.selectOrderScoreAvg(ebookNo);
 		%>
-		<table border="1">
-			<tr>
-				<td rowspan="3"><img src="<%=request.getContextPath()%>/image/<%=ebook.getEbookImg() %>" width="200" height="200"></td>
-				<td><%=ebook.getEbookTitle()%></td>
-			</tr>
-			<tr>
-				<td><%=ebook.getEbookAuthor()%></td>
-			</tr>
-			<tr>
-				<td>₩ <%=ebook.getEbookPrice()%></td>
-			</tr>
-		</table>
+		<table class="table">
+		<tr>
+			<td colspan="4"><h2><%=ebook.getEbookTitle()%></h2></td>
+		</tr>
+		<tr>
+			<th>ebookNo</th>
+			<td><%=ebook.getEbookNo()%></td>
+			<td align="center" colspan="2" rowspan="4"><img src="<%=request.getContextPath()%>/image/<%=ebook.getEbookImg()%>" width="250" height="250"></td>
+		</tr>
+		<tr>
+			<th>ebookISBN</th>
+			<td><%=ebook.getEbookISBN()%></td>
+		</tr>
+		<tr>
+			<th>categoryName</th>
+			<td><%=ebook.getCategoryName()%></td>
+		</tr>
+		<tr>
+			<th>ebookState</th>
+			<td><%=ebook.getEbookState()%></td>
+		</tr>
+		<tr>
+			<th>ebookTitle</th>
+			<td><%=ebook.getEbookTitle()%></td>
+			<th>ebookSummary</th>
+			<td><%=ebook.getEbookSummary()%></td>
+		</tr>
+		<tr>
+			<th>ebookAuthor</th>
+			<td><%=ebook.getEbookAuthor()%></td>
+			<th>ebookPageCount</th>
+			<td><%=ebook.getEbookPageCount()%></td>
+		</tr>
+		<tr>
+			<th>ebookCompany</th>
+			<td><%=ebook.getEbookCompany()%></td>
+			<th>createDate</th>
+			<td><%=ebook.getCreateDate()%></td>
+		</tr>
+		<tr>
+			<th>ebookPrice</th>
+			<td><%=ebook.getEbookPrice()%></td>
+			<th>평균 별점</th>
+			<td><%=avgScore%></td>
+		</tr>
+	</table>
 	</div>
 
-
-
 	<!-- 주문 입력하는 폼 -->
-	<div>
-		<h2>전자책 주문</h2>
-		
+	<div>		
 		<%			
 			// 0-2. 방어 코드 : 로그인한 회원만 접속 가능
 			if(loginMember == null){
 		%>
-			<div>
-				로그인 후에 주문이 가능합니다.
-				<a href="<%=request.getContextPath()%>/loginForm.jsp">로그인 페이지로 이동</a>
+			<div style="margin:20px;">
+				로그인 후에 주문이 가능합니다.<br>
+				<a class="btn btn-info" href="<%=request.getContextPath()%>/loginForm.jsp">로그인 페이지로 이동</a>
 			</div>
 		<%
 			} else {
@@ -91,7 +124,7 @@
 			<input type="hidden" name="ebookNo" value="<%=ebookNo%>">
 			<input type="hidden" name="memberNo" value="<%=loginMember.getMemberNo()%>">
 			<input type="hidden" name="ebookPrice" value="<%=ebook.getEbookPrice()%>">
-			<button type="submit">주문하기</button>
+			<button style="margin:20px;" class="btn btn-primary" type="submit">주문하기</button>
 		</form>
 		<%
 			}
@@ -102,36 +135,30 @@
 	<!-- SELECT AVG(order_score) FROM order_comment WHERE ebook_no=? ORDER BY ebook_no -->
 	<!--  SELECT * FROM order_comment WHERE ebook_no=? LIMIT ?, ? -->
 	<div>
-		<div>
-			<%
-				OrderCommentDao orderCommentDao = new OrderCommentDao();
-				double avgScore = orderCommentDao.selectOrderScoreAvg(ebookNo);
-			%>
-			별점 평균 : <%=avgScore %>
-		</div>
-		<div>
-			<h2>후기 목록</h2>
-				<table>
-					<tr>
-						<td>GRADE</td>
-						<td>COMMENT</td>
-						<td>DATE</td>
-					</tr>
-					<%
-						ArrayList<OrderComment> commentList = new ArrayList<OrderComment>();
-						commentList = orderCommentDao.selectCommentList(beginRow, ROW_PER_PAGE, ebookNo);
-						
-						for(OrderComment c : commentList) {
-					%>
-							<tr>
-								<td><%=c.getOrderScore()%></td>
-								<td><%=c.getOrderCommentContent()%></td>
-								<td><%=c.getCreateDate()%></td>
-							</tr>
-					<%
-						}
-					%>
-				</table>
+		<h2>후기 목록</h2>
+			<table class="table table-striped">
+				<tr>
+					<th>order_score</th>
+					<th>order_comment_content</th>
+					<th>create_date</th>
+				</tr>
+				<%
+					ArrayList<OrderComment> commentList = new ArrayList<OrderComment>();
+					commentList = orderCommentDao.selectCommentList(beginRow, ROW_PER_PAGE, ebookNo);
+					
+					for(OrderComment c : commentList) {
+				%>
+						<tr>
+							<td><%=c.getOrderScore()%></td>
+							<td><%=c.getOrderCommentContent()%></td>
+							<td><%=c.getCreateDate()%></td>
+						</tr>
+				<%
+					}
+				%>
+			</table>
+			
+			<div align="center" style="margin:30px;">
 				<%
 				// 6-1. 총 ebook의 수
 				int totalCount = orderCommentDao.totalCommentCount();
@@ -159,7 +186,7 @@
 				// 6-6. 이전 버튼 출력
 				if(startPage > displayPage){
 				%>
-					<a href="<%=request.getContextPath()%>/selectEbookOne?commentPage=<%=startPage-displayPage%>&ebookNo=<%=ebookNo%>">이전</a>
+					<a class="btn btn-dark" href="<%=request.getContextPath()%>/selectEbookOne?commentPage=<%=startPage-displayPage%>&ebookNo=<%=ebookNo%>">이전</a>
 				<%
 				}
 			
@@ -167,11 +194,11 @@
 				for(int i=startPage; i<=endPage; i++) {
 					if(i<lastPage){
 				%>
-						<a href="<%=request.getContextPath()%>/selectEbookOne.jsp?commentPage=<%=i%>&ebookNo=<%=ebookNo%>"><%=i%></a>
+						<a class="btn btn-secondary" href="<%=request.getContextPath()%>/selectEbookOne.jsp?commentPage=<%=i%>&ebookNo=<%=ebookNo%>"><%=i%></a>
 				<%
 					} else if(endPage>lastPage){
 				%>
-						<a href="<%=request.getContextPath()%>/selectEbookOne.jsp?commentPage=<%=i%>&ebookNo=<%=ebookNo%>"><%=i%></a>
+						<a class="btn btn-secondary" href="<%=request.getContextPath()%>/selectEbookOne.jsp?commentPage=<%=i%>&ebookNo=<%=ebookNo%>"><%=i%></a>
 				<%	
 						break;
 					}
@@ -180,7 +207,7 @@
 				// 6-8. 다음 버튼
 				if(endPage < lastPage){
 				%>
-					<a href="<%=request.getContextPath()%>/selectEbookOne.jsp?commentPage=<%=startPage+displayPage%>&ebookNo=<%=ebookNo%>">다음</a>
+					<a class="btn btn-dark" href="<%=request.getContextPath()%>/selectEbookOne.jsp?commentPage=<%=startPage+displayPage%>&ebookNo=<%=ebookNo%>">다음</a>
 				<%
 				}
 				%>

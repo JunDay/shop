@@ -44,24 +44,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>[관리자] 주문 목록 조회 | selectOrderList.jsp</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<title>selectOrderList.jsp</title>
 </head>
-<body>
-	<!-- adminMenu.jsp Start -->
-	<div>
+<div class="container">
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+		<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+		<!-- start : submenu include -->
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<!-- end : submenu include -->
+	</nav>
+	<div class="jumbotron">
+		<h1>[관리자] 회원 주문 목록 출력</h1>
+		<p>회원들의 전자책 주문 목록 표시</p>
 	</div>
-	<!-- adminMenu.jsp End -->
 	
 	<h1>주문 목록</h1>
-	<table>
+	<table class="table table-striped">
 		<thead>
 			<tr>
-				<td>orderNo</td>
-				<td>ebookTitle</td>
-				<td>orderPrice</td>
-				<td>orderDate</td>
-				<td>memberId</td>
+				<th>orderNo</th>
+				<th>ebookTitle</th>
+				<th>orderPrice</th>
+				<th>orderDate</th>
+				<th>memberId</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -133,5 +140,6 @@
 	<%
 	}
 	%>
+</div>
 </body>
 </html>
