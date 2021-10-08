@@ -9,6 +9,36 @@ import commons.*;
 
 public class CategoryDao {
 	
+	/* [관리자] 카테고리 삭제 */
+	public void deleteCategory(String categoryName) throws SQLException, ClassNotFoundException {
+		System.out.println("+[Debug] \"Started\" | CategoryDao.deleteCategory()");
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		System.out.println(" [Debug] categoryName : \""+categoryName+"\" | CategoryDao.deleteCategory()");
+		
+		// 1. noticeNo에 해당되는 공지사항 삭제 쿼리 생성
+		String sql = "DELETE FROM category WHERE category_name=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, categoryName);
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | CategoryDao.deleteCategory()");
+		
+		// 2. 쿼리실행
+		int row = stmt.executeUpdate();
+		
+		// 3. 사용한 자원 반환
+		stmt.close();
+		conn.close();
+		
+		// 4. 쿼리 실행결과 디버깅
+		if(row == 1) {
+			System.out.println(" [Debug] \"Succesful Finished\" | CategoryDao.deleteCategory()");
+		}
+		System.out.println("-[Debug] \"Failed\" | CategoryDao.deleteCategory()");
+	}
+	
 	/* [관리자] 카테고리 정보 수정 */
 	public void updateCategory(Category category, String categoryName) throws ClassNotFoundException, SQLException {
 		System.out.println("+[Debug] \"Started\" | CategoryDao.updateCategory()");

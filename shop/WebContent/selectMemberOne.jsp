@@ -37,8 +37,19 @@ Member member = memberDao.selectMemberOne(memberNo);
 </head>
 <body>
 <div class="container">
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+<%
+	if(loginMember.getMemberLevel() < 1){
+%>	
+		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+			<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+<%
+	} else {
+%>
+		<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+			<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+<%
+	}
+%>
 	<!-- start : submenu include -->
 	<div>
 	<%
@@ -122,11 +133,10 @@ Member member = memberDao.selectMemberOne(memberNo);
 	} else {
 	%>
 		<a class="btn btn-success" href="<%=request.getContextPath()%>/admin/updateMemberLevelForm.jsp?memberNo=<%=member.getMemberNo()%>">Level 수정</a>
-		<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/deleteMember.jsp?memberNo=<%=member.getMemberNo()%>">강제 탈퇴</a>
+		<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/adminPasswordCheckForm.jsp?memberNo=<%=member.getMemberNo()%>&deleteOptionNum=1">강제 탈퇴</a>
 	<%
 	}
 	%>
-	
 	
 </div>
 </body>

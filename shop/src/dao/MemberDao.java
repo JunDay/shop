@@ -12,8 +12,8 @@ import vo.*;
 
 public class MemberDao {
 	
-	/* [회원] 로그인한 회원의 비밀번호를 확인*/
-	public int memberPwCheck(String memberNo, String memberPw) throws ClassNotFoundException, SQLException {
+	/* [관리자] 로그인한 관리자의 Pw를 확인 */
+	public int adminPwCheck(String memberId, String memberPw) throws ClassNotFoundException, SQLException {
 		System.out.println("+[Debug] \"Started\" | MemeberDao.memberPwCheck()");
 		
 		// 0. 쿼리의 실행값을 저장하기 위한 변수
@@ -24,10 +24,10 @@ public class MemberDao {
 		Connection conn = dbUtil.getConnection();
 		
 		// 1. 멤버 Pw 확인 : 입력된 로그인된 회원의 정보와 입력한 Pw가 일치하는지 확인ㄴ하는 쿼리 생성
-		String sql = "SELECT member_pw memberPw FROM member WHERE member_no=? AND member_pw=PASSWORD(?)";
+		String sql = "SELECT member_pw memberPw FROM member WHERE member_id=? AND member_pw = PASSWORD(?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, memberNo);
-		stmt.setString(1, memberPw);
+		stmt.setString(1, memberId);
+		stmt.setString(2, memberPw);
 
 		// 2. 쿼리 실행
 		ResultSet rs = stmt.executeQuery();

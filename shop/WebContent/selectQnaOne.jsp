@@ -64,7 +64,7 @@
 			if(loginMember.getMemberLevel() >= 1){
 		%>
 				<a class="btn btn-primary" href="<%=request.getContextPath()%>/admin/insertQnaCommentForm.jsp?qnaNo=<%=qna.getQnaNo()%>">답글작성</a>
-				<a class="btn btn-danger" href="<%=request.getContextPath()%>/deleteQna.jsp?qnaNo=<%=qna.getQnaNo()%>">강제삭제</a>
+				<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/adminPasswordCheckForm.jsp?qnaNo=<%=qna.getQnaNo()%>&deleteOptionNum=5">강제삭제</a>
 		<%
 			} else {
 		%>

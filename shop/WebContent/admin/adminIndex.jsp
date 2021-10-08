@@ -33,6 +33,7 @@
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 		<!-- end : submenu include -->
 	</nav>
+	
 	<div class="jumbotron">
 		<h1>관리자 페이지</h1>
 		<p><%=loginMember.getMemberName() %>님 반갑습니다.</p>

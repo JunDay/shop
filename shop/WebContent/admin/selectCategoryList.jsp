@@ -33,8 +33,8 @@
 </head>
 <body>
 <div class="container">
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+		<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
 		<!-- start : submenu include -->
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 		<!-- end : submenu include -->
@@ -48,11 +48,12 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<td>categoryName</td>
-				<td>categoryState</td>
-				<td>updateDate</td>
-				<td>createDate</td>
-				<td>수정하기</td>
+				<th>categoryName</th>
+				<th>categoryState</th>
+				<th>updateDate</th>
+				<th>createDate</th>
+				<th>수정</th>
+				<th>삭제</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -65,6 +66,7 @@
 						<td><%=category.getUpdateDate()%></td>
 						<td><%=category.getCreateDate()%></td>
 						<td><a class="btn btn-warning" href="<%=request.getContextPath()%>/admin/updateCategoryForm.jsp?categoryName=<%=category.getCategoryName()%>&categoryState=<%=category.getCategoryState()%>">수정</a></td>
+						<td><a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/adminPasswordCheckForm.jsp?categoryName=<%=category.getCategoryName()%>&deleteOptionNum=3">삭제</a></td>
 					</tr>
 			<%
 				}

@@ -24,14 +24,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<title>updateEbookImgform.jsp</title>
 </head>
-<body>
-	<!-- adminMenu.jsp Start -->
-	<div>
+<div class="container">
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+		<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+		<!-- start : submenu include -->
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<!-- end : submenu include -->
+	</nav>
+	
+	<div class="jumbotron">
+		<h1>[관리자] 상품 이지미 변경</h1>
+		<p>상품의 변경할 이미지를 선택 후 변경</p>
 	</div>
-	<!-- adminMenu.jsp End -->
 	
 	<form action="<%=request.getContextPath()%>/admin/updateEbookImgAction.jsp" method="post" enctype="multipart/form-data">
 				<!-- enctype="multipart/form-data" : 액션으로 기계어 코드를 넘길 때 사용 -->
@@ -41,5 +48,6 @@
 		<button type="submit">이미지파일 수정</button>
 
 	</form>
+</div>
 </body>
 </html>

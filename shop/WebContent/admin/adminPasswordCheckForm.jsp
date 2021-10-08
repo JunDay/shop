@@ -5,7 +5,7 @@
 <%
 	//0. 인코딩 설정
 	request.setCharacterEncoding("utf-8");
-	System.out.println("+[Debug] \"Started\" | /admin/deleteNoticeForm.jsp");
+	System.out.println("+[Debug] \"Started\" | /admin/adminPasswordCheck.jsp");
 	
 	// 0-1. 로그인된 세션 확인
 	Member loginMember = (Member)session.getAttribute("loginMember");
@@ -16,12 +16,10 @@
 		return;
 	}
 	
-	// 1. 전달받은 noticeNo 변수에 대입 및 디버깅
-	String noticeNo = request.getParameter("noticeNo");
-	System.out.println(" [Debug] noticeNo : \""+noticeNo+"\" | /admin/deleteNoticeForm.jsp");
+	// 1. 전달받은 optionNum 변수에 대입 및 디버깅
+	int deleteOptionNum = Integer.parseInt(request.getParameter("deleteOptionNum"));
+	System.out.println(" [Debug] deleteOptionNum : \""+deleteOptionNum+"\" | /admin/adminPasswordCheck.jsp");
 	
-	// 1. NoticeDao객체 생성
-	NoticeDao noticeDao = new NoticeDao();
 %>
 <!DOCTYPE html>
 <html>
@@ -41,11 +39,40 @@
 	</nav>
 	
 	<div class="jumbotron">
-		<h1>[관리자] 공지사항 삭제</h1>
-		<p>공지사항을 삭제하기 위해 PW 입력</p>
+		<h1>[관리자] 비밀번호 확인</h1>
+		<p>삭제하기 위해 관리자의 PW 확인</p>
 	</div>
 	
-	<form id="deleteNoticeForm" method="post" action="<%=request.getContextPath()%>/admin/deleteNoticeAction.jsp?noticeNo=<%=noticeNo%>">
+	<form id="deleteForm" method="post" action="<%=request.getContextPath()%>/admin/adminPasswordCheckAction.jsp?deleteOptionNum=<%=deleteOptionNum%>">
+	<%
+		// 2. 삭제할 활동의 옵션 확인
+		if(deleteOptionNum == 1){ // 2-1. 멤버 삭제
+			int memberNo = Integer.parseInt(request.getParameter("memberNo")); // 삭제할 멤버의 memberNo
+	%>
+			<input type="hidden" name="memberNo" value="<%=memberNo%>">
+	<%
+		} else if(deleteOptionNum == 2){ // 2-2. 공지사항 삭제
+			int noticeNo = Integer.parseInt(request.getParameter("noticeNo")); // 삭제할 멤버의 memberNo
+	%>
+			<input type="hidden" name="noticeNo" value="<%=noticeNo%>">
+	<%
+		} else if(deleteOptionNum == 3){ // 2-3. 카테고리 삭제
+			String categoryName = request.getParameter("categoryName"); // 삭제할 멤버의 memberNo
+	%>
+			<input type="hidden" name="categoryName" value="<%=categoryName%>">
+	<%
+		} else if(deleteOptionNum == 4){ // 2-4. 전자책 삭제
+			int ebookNo = Integer.parseInt(request.getParameter("ebookNo")); // 삭제할 멤버의 memberNo
+	%>
+			<input type="hidden" name="ebookNo" value="<%=ebookNo%>">
+	<%
+		} else if(deleteOptionNum == 5){ // 2-5. Q&A 삭제
+			int qnaNo = Integer.parseInt(request.getParameter("qnaNo")); // 삭제할 멤버의 memberNo
+	%>
+			<input type="hidden" name="qnaNo" value="<%=qnaNo%>">
+	<%
+		}
+	%>
 		<table class="table table-striped">
 			<tr>
 				<th>memberPw</th>
@@ -76,7 +103,7 @@
 				alert('memberPw또는 memberPwCheck를 확인하세요.');
 				return;
 			}
-			$('#deleteNoticeForm').submit();
+			$('#deleteForm').submit();
 		});
 	</script>
 </div>

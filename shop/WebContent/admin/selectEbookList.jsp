@@ -53,6 +53,7 @@
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 		<!-- end : submenu include -->
 	</nav>
+	
 	<div class="jumbotron">
 		<h1>[관리자] 전자책 목록</h1>
 		<p>전자책 목록 표시</p>

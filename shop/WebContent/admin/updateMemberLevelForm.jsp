@@ -34,11 +34,11 @@
 </head>
 <body>
 <div class="container">
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
-	<!-- start : submenu include -->
-	<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
-	<!-- end : submenu include -->
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+		<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+		<!-- start : submenu include -->
+		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<!-- end : submenu include -->
 	</nav>
 	
 	<div class="jumbotron">

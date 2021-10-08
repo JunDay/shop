@@ -49,14 +49,14 @@ public class NoticeDao {
 	public int deleteNoticeAdminCheck(String memberId, String memberPw) throws ClassNotFoundException, SQLException {
 		
 		// 0. 확인된 memebrId를 반환해주기 위한 변수
-		String adminPw = null;
+		String checkResult = null;
 		
 		// 0. DB 연결
 		DBUtil dbUtil = new DBUtil();
 		Connection conn = dbUtil.getConnection();
 		
 		// 1. memberId를 이용해 로그인된 memberPw를 조회하고 입력받은 memberPw와 같은지 확인하는 쿼리 생성
-		String sql = "SELECT member_pw adminPw FROM member WHERE member_id=? AND member_pw = PASSWORD(?)";
+		String sql = "SELECT member_pw memberPw FROM member WHERE member_id=? AND member_pw = PASSWORD(?)";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, memberId);
 		stmt.setString(2, memberPw);
@@ -66,7 +66,7 @@ public class NoticeDao {
 		// 2. 쿼리 실행 및 Pw 값 변수에 대입
 		ResultSet rs = stmt.executeQuery();
 		if(rs.next()) {
-			adminPw = rs.getString("adminPw");
+			checkResult = rs.getString("adminPw");
 		}
 		
 		// 3. 사용한 자원 반환
@@ -76,7 +76,7 @@ public class NoticeDao {
 		
 		// 4. 입력한 Pw와 DB의 Pw를 비교
 			// 성공 : 1 반환 | 실패 : 0 반환
-		if(adminPw != null) {
+		if(checkResult != null) {
 			System.out.println(" [Debug] \"Succesful Finished\" | NoticeDao.deleteNoticeAdminCheck()");
 			return 1;
 		}

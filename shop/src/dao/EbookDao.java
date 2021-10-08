@@ -11,6 +11,36 @@ import vo.*;
 
 public class EbookDao {
 	
+	/* [관리자] 전자책 삭제 */
+	public void deleteEbook(int ebookNo) throws SQLException, ClassNotFoundException {
+		System.out.println("+[Debug] \"Started\" | EbookDao.deleteEbook()");
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		System.out.println(" [Debug] ebookNo : \""+ebookNo+"\" | EbookDao.deleteEbook()");
+		
+		// 1. noticeNo에 해당되는 공지사항 삭제 쿼리 생성
+		String sql = "DELETE FROM ebook WHERE ebook_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, ebookNo);
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | EbookDao.deleteEbook()");
+		
+		// 2. 쿼리실행
+		int row = stmt.executeUpdate();
+		
+		// 3. 사용한 자원 반환
+		stmt.close();
+		conn.close();
+		
+		// 4. 쿼리 실행결과 디버깅
+		if(row == 1) {
+			System.out.println(" [Debug] \"Succesful Finished\" | EbookDao.deleteEbook()");
+		}
+		System.out.println("-[Debug] \"Failed\" | EbookDao.deleteEbook()");
+	}
+	
 	/* [관리자] 인기 상품 TOP 5 출력*/
 	public ArrayList<Ebook> selectNewEbookList() throws ClassNotFoundException, SQLException{
 		System.out.println("+[Debug] \"Started\" | EbookDao.selectNewEbookList()");

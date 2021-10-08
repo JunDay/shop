@@ -53,7 +53,7 @@
 				%>
 				<a class="btn btn-success" href="<%=request.getContextPath()%>/admin/insertNoticeForm.jsp">새 공지작성</a>
 				<a class="btn btn-warning" href="<%=request.getContextPath()%>/admin/updateNoticeForm.jsp?noticeNo=<%=notice.getNoticeNo()%>">수정</a>
-				<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/deleteNoticeForm.jsp?noticeNo=<%=notice.getNoticeNo()%>">삭제</a>
+				<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/adminPasswordCheckForm.jsp?noticeNo=<%=notice.getNoticeNo()%>&deleteOptionNum=2">삭제</a>
 				<%
 			}
 		%>

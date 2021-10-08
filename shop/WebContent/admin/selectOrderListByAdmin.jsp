@@ -45,7 +45,6 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 <title>selectOrderList.jsp</title>
 </head>
 <div class="container">
@@ -55,6 +54,7 @@
 		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
 		<!-- end : submenu include -->
 	</nav>
+	
 	<div class="jumbotron">
 		<h1>[관리자] 회원 주문 목록 출력</h1>
 		<p>회원들의 전자책 주문 목록 표시</p>
@@ -76,7 +76,7 @@
 				for(OrderEbookMember oem : list){
 			%>
 					<tr>
-						<td><%=oem.getOrder().getOrderNo() %></td>
+						<td><a href="<%=request.getContextPath()%>/admin/selectOrderOneByAdmin.jsp?orerNo=<%=oem.getOrder().getOrderNo() %>"><%=oem.getOrder().getOrderNo() %></a></td>
 						<td><%=oem.getEbook().getEbookTitle() %></td>
 						<td><%=oem.getOrder().getOrderPrice() %></td>
 						<td><%=oem.getOrder().getOrderDate() %></td>
