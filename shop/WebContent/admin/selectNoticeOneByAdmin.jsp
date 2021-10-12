@@ -30,32 +30,24 @@
 </head>
 <body>
 <div class="container">
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-	<a class="navbar-brand btn btn-secondary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
-	<!-- start : submenu include -->
-	<div>
-		<jsp:include page="/partial/mainMenu.jsp"></jsp:include>
-	</div>
-	<!-- end : submenu include -->
-	
+	<nav class="navbar navbar-expand-sm bg-info navbar-dark">
+		<a class="navbar-brand btn btn-primary" href="<%=request.getContextPath()%>/index.jsp">Main</a>
+		<!-- start : submenu include -->
+		<jsp:include page="/partial/adminMenu.jsp"></jsp:include>
+		<!-- end : submenu include -->
 	</nav>
 	
 	<div class="jumbotron">
 		<h1>[공통] 공지사항 상세보기</h1>
 		<p>공지사항 확인</p>
 	</div>
+	
 	<div align="right">
-		<%
-			if(loginMember == null){
-				
-			}
-			else if(loginMember.getMemberLevel() >= 1){
-				%>
-				<a class="btn btn-info" href="<%=request.getContextPath()%>/admin/selectNoticeOneByAdmin.jsp?noticeNo=<%=notice.getNoticeNo()%>">관리하기</a>
-				<%
-			}
-		%>
+		<a class="btn btn-success" href="<%=request.getContextPath()%>/admin/insertNoticeForm.jsp">새 공지작성</a>
+		<a class="btn btn-warning" href="<%=request.getContextPath()%>/admin/updateNoticeForm.jsp?noticeNo=<%=notice.getNoticeNo()%>">수정</a>
+		<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/adminPasswordCheckForm.jsp?noticeNo=<%=notice.getNoticeNo()%>&deleteOptionNum=2">삭제</a>
 	</div>
+	
 	<table class="table table-striped">
 		<tr>
 			<td colspan="5"><h2><%=notice.getNoticeTitle()%></h2></td>
@@ -75,15 +67,13 @@
 		<tr>
 			<th>noticeTitle</th>
 			<td colspan="3"><%=notice.getNoticeTitle()%></td>
-		</tr>
+		</tr>S
 		<tr>
 			<th>noticeContent</th>
 			<td colspan="3"><%=notice.getNoticeContent()%></td>
 		</tr>
 	</table>
-	<a class="btn btn-info" href="<%=request.getContextPath()%>/index.jsp">뒤로가기</a>
-	<a class="btn btn-primary" href="<%=request.getContextPath()%>/selectNoticeList.jsp">목록보기</a>
-	
+	<a class="btn btn-info" href="<%=request.getContextPath()%>/admin/selectNoticeListByAdmin.jsp">뒤로가기</a>
 </div>
 </body>
 </html>

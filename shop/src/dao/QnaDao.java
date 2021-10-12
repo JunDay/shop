@@ -11,6 +11,136 @@ import vo.*;
 
 public class QnaDao {
 	
+	/* [관리자] 답변을 한 Q&A의 총 갯수 출력 */
+	public int totalQnaFinishedCommentCount() throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | NoticeDao.totalNoticeCount()");
+		int totalCount = 0 ;
+		//db접속 메소드 호출
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT COUNT(*) FROM qna q INNER JOIN qna_comment qc ON q.qna_no = qc.qna_no";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | NoticeDao.totalNoticeCount()");
+		
+		ResultSet rs= stmt.executeQuery();
+		
+		while(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+		
+		return totalCount;
+	}
+	
+	/* [관리자] 답변이 필요한 Q&A의 총 갯수 출력 */
+	public int totalQnaNeedCommentCount() throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | NoticeDao.totalNoticeCount()");
+		int totalCount = 0 ;
+		//db접속 메소드 호출
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT COUNT(*) FROM qna q LEFT JOIN qna_comment qc ON q.qna_no = qc.qna_no WHERE qc.qna_no IS NULL";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | NoticeDao.totalNoticeCount()");
+		
+		ResultSet rs= stmt.executeQuery();
+		
+		while(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+		
+		return totalCount;
+	}
+	
+	/* [관리자] 답변을 완료한 Q&A 목록출력 */
+	public ArrayList<Qna> selectQnaListFinishedComment(int beginRow, int rowPerPage) throws ClassNotFoundException, SQLException{
+		System.out.println("+[Debug] \"Started\" | QnaDao.selectQnaList()");
+		
+		// 0. 리턴할 Qna List 생성
+		ArrayList<Qna> list = new ArrayList<>();
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. Qna의 전체 목록 출력 조회 쿼리
+		String sql="SELECT q.qna_no qnaNo, q.qna_category qnaCategory, q.qna_title qnaTitle, q.qna_content qnaContent, q.qna_secret qnaSecret, q.member_no memberNo, m.member_name memberName, q.create_date createDate, q.update_date updateDate FROM qna q INNER JOIN qna_comment qc ON q.qna_no = qc.qna_no INNER JOIN member m ON q.member_no = m.member_no ORDER BY q.create_date  DESC LIMIT ?, ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, beginRow);
+		stmt.setInt(2, rowPerPage);
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | QnaDao.selectQnaList()");
+		
+		// 2. 쿼리 실행 및 데이터 변환(rs -> ArrayList<Notice>)
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Qna qna = new Qna();
+			qna.setQnaNo(rs.getInt("qnaNo"));
+			qna.setQnaCategory(rs.getString("qnaCategory"));
+			qna.setQnaTitle(rs.getString("qnaTitle"));
+			qna.setQnaContent(rs.getString("qnaContent"));
+			qna.setQnaSecret(rs.getString("qnaSecret"));
+			qna.setMemberNo(rs.getInt("memberNo"));
+			qna.setMemberName(rs.getString("memberName"));
+			qna.setCreateDate(rs.getString("createDate"));
+			qna.setUpdateDate(rs.getString("updateDate"));
+			list.add(qna);
+		}
+		
+		// 3. 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 4. 조회된 전체 qna의 리스트 목록 반환
+		return list;
+	}
+	
+	/* [관리자] 답변이 필요한 Q&A 목록출력 */
+	public ArrayList<Qna> selectQnaListNeedComment(int beginRow, int rowPerPage) throws ClassNotFoundException, SQLException{
+		System.out.println("+[Debug] \"Started\" | QnaDao.selectQnaList()");
+		
+		// 0. 리턴할 Qna List 생성
+		ArrayList<Qna> list = new ArrayList<>();
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. Qna의 전체 목록 출력 조회 쿼리
+		String sql="SELECT q.qna_no qnaNo, q.qna_category qnaCategory, q.qna_title qnaTitle, q.qna_content qnaContent, q.qna_secret qnaSecret, q.member_no memberNo, m.member_name memberName, q.create_date createDate, q.update_date updateDate FROM qna q LEFT JOIN qna_comment qc ON q.qna_no = qc.qna_no LEFT JOIN member m ON q.member_no = m.member_no WHERE qc.qna_no IS NULL ORDER BY q.create_date  DESC LIMIT ?, ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, beginRow);
+		stmt.setInt(2, rowPerPage);
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | QnaDao.selectQnaList()");
+		
+		// 2. 쿼리 실행 및 데이터 변환(rs -> ArrayList<Notice>)
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			Qna qna = new Qna();
+			qna.setQnaNo(rs.getInt("qnaNo"));
+			qna.setQnaCategory(rs.getString("qnaCategory"));
+			qna.setQnaTitle(rs.getString("qnaTitle"));
+			qna.setQnaContent(rs.getString("qnaContent"));
+			qna.setQnaSecret(rs.getString("qnaSecret"));
+			qna.setMemberNo(rs.getInt("memberNo"));
+			qna.setMemberName(rs.getString("memberName"));
+			qna.setCreateDate(rs.getString("createDate"));
+			qna.setUpdateDate(rs.getString("updateDate"));
+			list.add(qna);
+		}
+		
+		// 3. 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 4. 조회된 전체 qna의 리스트 목록 반환
+		return list;
+	}
+	
 	/* [회원] Q&A 삭제 */
 	public void deleteQna(int qnaNo) throws SQLException, ClassNotFoundException {
 		System.out.println("+[Debug] \"Started\" | QnaDao.deleteQna()");

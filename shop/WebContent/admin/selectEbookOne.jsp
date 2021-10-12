@@ -44,10 +44,11 @@
 		// 1. 선택한 ebook의 상세정보 조회
 		EbookDao ebookDao = new EbookDao();
 		Ebook ebook = ebookDao.selectEbookOne(ebookNo);
+		System.out.println(" [Debug] ebook : \""+ebook.toString() +"\" | selectEbookOne.jsp");
 	%>
 	<div align="right" style="margin:20px;">
-		<a class="btn btn-success" href="">전자책추가</a>
-		<a class="btn btn-warning" href="">가격수정</a>
+		<a class="btn btn-success" href="<%=request.getContextPath()%>/admin/insertEbookForm.jsp%>">전자책추가</a>
+		<a class="btn btn-warning" href="<%=request.getContextPath()%>/admin/updateEbookForm.jsp?ebookNo=<%=ebook.getEbookNo()%>">정보수정</a>
 		<a class="btn btn-primary" href="<%=request.getContextPath()%>/admin/updateEbookImgForm.jsp?ebookNo=<%=ebook.getEbookNo()%>">이미지수정</a>
 		<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/adminPasswordCheckForm.jsp?ebookNo=<%=ebookNo%>&deleteOptionNum=4">삭제</a>
 	</div>

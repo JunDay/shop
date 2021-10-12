@@ -11,6 +11,123 @@ import vo.*;
 
 public class EbookDao {
 	
+	/* [관리자] 전자책 정보 수정 */
+	public void updateEbook(Ebook ebook) throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | EbookDao.updateEbook()");
+		
+		// 0. 넘겨받은 카테고리 정보 디버깅
+		System.out.println("+[Debug] ebook : \""+ebook.toString()+"\" | EbookDao.updateEbook()");
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. 카테고리의 사용 상태 변경 및 업데이트 시간 변경
+		String sql = "UPDATE ebook SET ebook_isbn=?, category_name=?, ebook_state=?, ebook_title=?, ebook_summary=?, ebook_author=?, ebook_page_count=?, ebook_company=?, ebook_price=?, update_date=NOW() WHERE ebook_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, ebook.getEbookISBN());
+		stmt.setString(2, ebook.getCategoryName());
+		stmt.setString(3, ebook.getEbookState());
+		stmt.setString(4, ebook.getEbookTitle());
+		stmt.setString(5, ebook.getEbookSummary());
+		stmt.setString(6, ebook.getEbookAuthor());
+		stmt.setInt(7, ebook.getEbookPageCount());
+		stmt.setString(8, ebook.getEbookCompany());
+		stmt.setInt(9, ebook.getEbookPrice());
+		stmt.setInt(10, ebook.getEbookNo());
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | EbookDao.updateEbook()");
+		
+		// 2. 쿼리 실행
+		int row = stmt.executeUpdate();
+		  
+		// 3. 사용한 자원 반환
+		stmt.close();
+		conn.close();
+		  
+		// 4. 쿼리 실행결과 디버깅
+		if(row == 1) {
+			System.out.println(" [Debug] \"Ebook Info update Succesfuly finished\" | EbookDao.updateEbook()");
+			return;
+		}
+		System.out.println("-[Debug] \"Ebook Info update FAILED\" | EbookDao.updateEbook()");
+		return;
+	}
+	
+	/* [관리자] DB에 입력된 총 ebook의 Auto_increment수 출력, 이미지 insert용 */
+	/*public int checkAutoIncrementEbookNo() throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | EbookDao.checkAutoIncrementEbookNo()");
+		
+		// 0. 계사된 ebook의 총 갯수를 반환해줄 변수 생성
+		int totalCount = 0;
+		
+		// 0. DB 연결 설정
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. sql문과 stmt를 선언
+		String sql = "SHOW TABLE STATUS LIKE 'ebook'";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | EbookDao.totalEbookCount()");
+		
+		// 3. 쿼리 실행
+		ResultSet rs = stmt.executeQuery();
+		if(rs.next()) {
+			totalCount = rs.getInt("Auto_increment");
+		}
+		
+		// 4. 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 5. DB에 있는 총 ebook의 수 반환
+		return totalCount;
+	}*/
+
+	/* [관리자] 전자책 삽입 */
+	public void insertEbook(Ebook ebook) throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | EbookDao.insertEbook()");
+		
+		// 0. 입력받은 카테고리 정보 디버깅
+		System.out.println(" [Debug] Ebook : \""+ebook.toString()+"\" | EbookDao.insertEbook()");
+	  
+		 // 0. DB 연결
+		 DBUtil dbUtil = new DBUtil();
+		 Connection conn = dbUtil.getConnection();
+		  
+		 // 1. 카테고리를 추가하기 위한 카테고리 정보 삽입 쿼리
+		 String sql = "INSERT INTO ebook(ebook_isbn, category_name, ebook_title, ebook_author, ebook_company, ebook_page_count, ebook_price, ebook_img, ebook_summary, ebook_state, create_date, update_date) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+		 PreparedStatement stmt = conn.prepareStatement(sql);
+		 stmt.setString(1, ebook.getEbookISBN());
+		 stmt.setString(2, ebook.getCategoryName());
+		 stmt.setString(3, ebook.getEbookTitle());
+		 stmt.setString(4, ebook.getEbookAuthor());
+		 stmt.setString(5, ebook.getEbookCompany());
+		 stmt.setInt(6, ebook.getEbookPageCount());
+		 stmt.setInt(7, ebook.getEbookPrice());
+		 stmt.setString(8, ebook.getEbookImg());
+		 stmt.setString(9, ebook.getEbookSummary());
+		 stmt.setString(10, ebook.getEbookState());
+		 
+		 System.out.println(" [Debug] stmt : \""+stmt +"\" | EbookDao.insertEbook()");
+		  
+		 // 2. 쿼리 실행
+		 int row = stmt.executeUpdate();
+		  
+		 // 3. 사용한 자원 반환
+		 stmt.close();
+		 conn.close();
+		  
+		 // 4. 쿼리 실행결과 디버깅
+		 if(row == 1) {
+			System.out.println(" [Debug] \"Category insert Succesfuly finished\" | EbookDao.insertEbook()");
+		 	return;
+		 }
+		 System.out.println("-[Debug] \"Category insert FAILED\" | EbookDao.insertEbook()");
+		 return;
+	}
+	
 	/* [관리자] 전자책 삭제 */
 	public void deleteEbook(int ebookNo) throws SQLException, ClassNotFoundException {
 		System.out.println("+[Debug] \"Started\" | EbookDao.deleteEbook()");

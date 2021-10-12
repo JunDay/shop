@@ -9,6 +9,71 @@ import commons.DBUtil;
 import vo.*;
 
 public class OrderDao {
+
+	// [관리자] 고객 주문 목록 출력
+	public OrderEbookMember selectOrderOneByAdmin(int orderNo) throws ClassNotFoundException, SQLException{
+		System.out.println("+[Debug] \"Started\" | OrderDao.selectOrderOneByAdmin()");
+		
+		// 0. 주문 리스트 목록을 반환해줄 객체 생성
+		OrderEbookMember oem = new OrderEbookMember();
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. 고객이 주문한 정보를 조회하는 쿼리
+		String sql = "SELECT o.order_no orderNo, e.ebook_no ebookNo, e.category_name categoryName, e.ebook_title ebookTitle, e.ebook_author ebookAuthor, e.ebook_company ebookCompany, e.ebook_img ebookImg, e.ebook_state ebookState, m.member_no memberNo, m.member_id memberId, m.member_name memberName, m.member_level memberLevel, m.member_age memberAge, m.member_gender memberGender, o.order_price orderPrice, o.order_date orderDate, o.update_date updateDate FROM orders o INNER JOIN ebook e INNER JOIN member m ON o.ebook_no = e.ebook_no AND o.member_no = m.member_no WHERE o.order_no=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, orderNo);
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | OrderDao.selectOrderOneByAdmin()");
+		
+		// 2. 쿼리 실행 및 데이터 가공(rs -> ArrayList<OEM>)
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			
+			// 2-1. 주문 정보 변환
+			Order o = new Order();
+			o.setOrderNo(rs.getInt("orderNo"));
+			o.setOrderPrice(rs.getInt("orderPrice"));
+			o.setOrderDate(rs.getString("orderDate"));
+			o.setUpdateDate(rs.getString("updateDate"));
+			System.out.println(" [Debug] Order : \""+o.toString()+"\" | OrderDao.selectOrderOneByAdmin()");
+			oem.setOrder(o);
+			
+			// 2-2. ebook 정보 변환
+			Ebook e = new Ebook();
+			e.setEbookNo(rs.getInt("ebookNo"));
+			e.setCategoryName(rs.getString("categoryName"));
+			e.setEbookTitle(rs.getString("ebookTitle"));
+			e.setEbookAuthor(rs.getString("ebookAuthor"));
+			e.setEbookCompany(rs.getString("ebookCompany"));
+			e.setEbookImg(rs.getString("ebookImg"));
+			e.setEbookState(rs.getString("ebookState"));
+			System.out.println(" [Debug] Ebook : \""+e.toString()+"\" | OrderDao.selectOrderOneByAdmin()");
+			oem.setEbook(e);
+			
+			// 2-3. 멤버 정보 반환
+			Member m = new Member();
+			m.setMemberNo(rs.getInt("memberNo"));
+			m.setMemberId(rs.getString("memberId"));
+			m.setMemberName(rs.getString("memberName"));
+			m.setMemberLevel(rs.getInt("memberLevel"));
+			m.setMemberAge(rs.getInt("memberAge"));
+			m.setMemberGender(rs.getString("memberGender"));
+			System.out.println(" [Debug] Member : \""+m.toString()+"\" | OrderDao.selectOrderOneByAdmin()");
+			oem.setMember(m);
+		}
+		System.out.println(" [Debug] OrderEbookMember : \""+oem.toString()+"\" | OrderDao.selectOrderOneByAdmin()");
+		
+		// 3. 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 4. 조회된 고객 주문 목록 반환
+		return oem;
+	}
 	
 	// [관리자] 고객 주문 목록 출력
 	public ArrayList<OrderEbookMember> selectOrderListByMember(int memberNo) throws ClassNotFoundException, SQLException{
@@ -37,7 +102,7 @@ public class OrderDao {
 			Order o = new Order();
 			o.setOrderNo(rs.getInt("orderNo"));
 			o.setOrderPrice(rs.getInt("orderPrice"));
-			o.setOrderDate(rs.getString("orderDate"));;
+			o.setOrderDate(rs.getString("orderDate"));
 			oem.setOrder(o);
 			
 			// 2-2. ebook 정보 변환
@@ -125,7 +190,7 @@ public class OrderDao {
 			Order o = new Order();
 			o.setOrderNo(rs.getInt("orderNo"));
 			o.setOrderPrice(rs.getInt("orderPrice"));
-			o.setOrderDate(rs.getString("orderDate"));;
+			o.setOrderDate(rs.getString("orderDate"));
 			oem.setOrder(o);
 			
 			// 2-2. ebook 정보 변환

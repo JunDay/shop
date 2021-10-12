@@ -60,6 +60,7 @@
 	</div>
 	
 	<!-- 3. 카테고리 목록 출력, 카레고리 선택 후 검색 버튼 클릭 시 해당 카테고리 선택 -->
+	<div align="right" style="margin:20px;">
 	<form method="get" action="<%=request.getContextPath()%>/admin/selectEbookList.jsp">
 		<select name="ebookCategory">
 			<option value="">전체목록</option>
@@ -71,8 +72,10 @@
 				}
 			%>
 		</select>
-		<button type="submit" class="btn btn-success">검색</button>
-	
+		<button type="submit" class="btn btn-info">검색</button>
+		<a class="btn btn-success" href="<%=request.getContextPath()%>/admin/insertEbookForm.jsp">전자책추가</a>
+	</form>
+	</div>
 	<!-- 4. ebook 목록 조회 -->
 	<%
 		EbookDao ebookDao = new EbookDao();
@@ -111,7 +114,7 @@
 		%>
 		</tbody>
 	</table>
-	</form>
+	
 	<!-- 6. 페이징 출력 -->
 	<div align="center" style="margin:30px;">
 	<%

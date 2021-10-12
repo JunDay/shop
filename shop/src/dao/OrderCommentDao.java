@@ -11,8 +11,50 @@ import java.util.*;
 
 public class OrderCommentDao {
 	
+	/* [관리자] 모든 orderComment 목록 출력 */
+	public ArrayList<OrderComment> selectOrderCommentListByAdmin(int beginRow, int rowPerPage) throws ClassNotFoundException, SQLException{
+		System.out.println("+[Debug] \"Started\" | NoticeDao.selectNoticeList()");
+		
+		// 0. 리턴할 OrderComment List 생성
+		ArrayList<OrderComment> list = new ArrayList<>();
+		
+		// 0. DB 연결
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		// 1. OrderComment의 전체 목록 출력 조회 쿼리
+		String sql="SELECT order_no orderno, ebook_no ebookNo, order_score orderScore, order_comment_content orderCommentContent, create_date createDate, update_date updateDate FROM order_comment ORDER BY create_date DESC LIMIT ?, ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setInt(1, beginRow);
+		stmt.setInt(2, rowPerPage);
+		
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | NoticeDao.selectNoticeList()");
+		
+		// 2. 쿼리 실행 및 데이터 변환(rs -> ArrayList<OrderComment>)
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			OrderComment orderComment = new OrderComment();
+			orderComment.setOrderNo(rs.getInt("orderNo"));
+			orderComment.setEbookNo(rs.getInt("ebookNo"));
+			orderComment.setOrderScore(rs.getInt("orderScore"));
+			orderComment.setOrderCommentContent(rs.getString("OrderCommentContent"));
+			orderComment.setCreateDate(rs.getString("createDate"));
+			orderComment.setUpdateDate(rs.getString("updateDate"));
+			list.add(orderComment);
+		}
+		
+		// 3. 자원 반환
+		rs.close();
+		stmt.close();
+		conn.close();
+		
+		// 4. 조회된 전체 OrderComment의 리스트 목록 반환
+		return list;
+	}
+	
 	/* [공통] 댓글의 총 수 출력 */
 	public int totalCommentCount() throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | OrderCommentDao.totalCommentCount()");
 		int totalCount = 0 ;
 		//db접속 메소드 호출
 		DBUtil dbUtil = new DBUtil();
@@ -20,6 +62,7 @@ public class OrderCommentDao {
 		
 		String sql = "SELECT COUNT(*) FROM order_comment";
 		PreparedStatement stmt = conn.prepareStatement(sql);
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | OrderCommentDao.totalCommentCount()");
 		
 		ResultSet rs= stmt.executeQuery();
 		

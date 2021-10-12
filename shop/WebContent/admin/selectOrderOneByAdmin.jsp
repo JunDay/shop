@@ -17,7 +17,7 @@
 	}
 	
 	// 0-3. 선택한 ebook의 ebookNo 확인
-	int ebookNo = Integer.parseInt(request.getParameter("ebookNo"));
+	int orderNo = Integer.parseInt(request.getParameter("orderNo"));
 %>
 
 <!DOCTYPE html>
@@ -36,69 +36,82 @@
 	</nav>
 	
 	<div class="jumbotron">
-		<h1>[관리자] 전자책 상세보기</h1>
-		<p>선택한 전자책 상세정보 표시</p>
+		<h1>[관리자] 전자책 주문 상세보기</h1>
+		<p>선택한 전자책 주문 상세정보</p>
 	</div>
 	
 	<%
 		// 1. 선택한 ebook의 상세정보 조회
-		EbookDao ebookDao = new EbookDao();
-		Ebook ebook = ebookDao.selectEbookOne(ebookNo);
+		OrderDao orderDao = new OrderDao();
+		OrderEbookMember oem = orderDao.selectOrderOneByAdmin(orderNo);
+		System.out.println(oem.toString());
 	%>
-	<div align="right" style="margin:20px;">
-		<a class="btn btn-success" href="">전자책추가</a>
-		<a class="btn btn-warning" href="">가격수정</a>
-		<a class="btn btn-primary" href="<%=request.getContextPath()%>/admin/updateEbookImgForm.jsp?ebookNo=<%=ebook.getEbookNo()%>">이미지수정</a>
-		<a class="btn btn-danger" href="<%=request.getContextPath()%>/admin/adminPasswordCheckForm.jsp?ebookNo=<%=ebookNo%>&deleteOptionNum=4">삭제</a>
-	</div>
 	
 	<table class="table">
 		<tr>
-			<td colspan="4"><h2><%=ebook.getEbookTitle()%></h2></td>
+			<td colspan="4"><h2>주문정보(<%=oem.getOrder().getOrderNo()%>)</h2></td>
+		</tr>
+		<tr>
+			<th>orderNo</th>
+			<td><%=oem.getOrder().getOrderNo()%></td>
+			<th>orderPrice</th>
+			<td><%=oem.getOrder().getOrderPrice()%></td>
+		</tr>
+		<tr>
+			<th>orderDate</th>
+			<td><%=oem.getOrder().getOrderDate()%></td>
+			<th>updateDate</th>
+			<td><%=oem.getOrder().getUpdateDate()%></td>
+		</tr>
+		<tr>
+			<td colspan="4"><h2>회원정보(<%=oem.getMember().getMemberNo()%>)</h2></td>
+		</tr>
+		<tr>
+			<th>memberNo</th>
+			<td><%=oem.getMember().getMemberNo()%></td>
+			<th>memberId</th>
+			<td><%=oem.getMember().getMemberId()%></td>
+		</tr>
+		<tr>
+			<th>memberName</th>
+			<td><%=oem.getMember().getMemberName()%></td>
+			<th>memberLevel</th>
+			<td><%=oem.getMember().getMemberLevel()%></td>
+		</tr>
+		<tr>
+			<th>memberAge</th>
+			<td><%=oem.getMember().getMemberAge()%></td>
+			<th>memberGender</th>
+			<td><%=oem.getMember().getMemberGender()%></td>
+		</tr>
+		<tr>
+			<td colspan="4"><h2>전자책정보(<%=oem.getOrder().getEbookNo()%>)</h2></td>
 		</tr>
 		<tr>
 			<th>ebookNo</th>
-			<td><%=ebook.getEbookNo()%></td>
-			<td align="center" colspan="2" rowspan="4"><img src="<%=request.getContextPath()%>/image/<%=ebook.getEbookImg()%>" width="250" height="250"></td>
-		</tr>
-		<tr>
-			<th>ebookISBN</th>
-			<td><%=ebook.getEbookISBN()%></td>
+			<td><%=oem.getOrder().getEbookNo()%></td>
+			<td align="center" colspan="2" rowspan="4"><img src="<%=request.getContextPath()%>/image/<%=oem.getEbook().getEbookImg()%>" width="250" height="250"></td>
 		</tr>
 		<tr>
 			<th>categoryName</th>
-			<td><%=ebook.getCategoryName()%></td>
-		</tr>
-		<tr>
-			<th>ebookState</th>
-			<td><%=ebook.getEbookState()%></td>
+			<td><%=oem.getEbook().getCategoryName()%></td>
 		</tr>
 		<tr>
 			<th>ebookTitle</th>
-			<td><%=ebook.getEbookTitle()%></td>
-			<th>ebookSummary</th>
-			<td><%=ebook.getEbookSummary()%></td>
+			<td><%=oem.getEbook().getEbookTitle()%></td>
+		</tr>
+		<tr>
+			<th>ebookState</th>
+			<td><%=oem.getEbook().getEbookState()%></td>
 		</tr>
 		<tr>
 			<th>ebookAuthor</th>
-			<td><%=ebook.getEbookAuthor()%></td>
-			<th>ebookPageCount</th>
-			<td><%=ebook.getEbookPageCount()%></td>
-		</tr>
-		<tr>
+			<td><%=oem.getEbook().getEbookAuthor()%></td>
 			<th>ebookCompany</th>
-			<td><%=ebook.getEbookCompany()%></td>
-			<th>createDate</th>
-			<td><%=ebook.getCreateDate()%></td>
-		</tr>
-		<tr>
-			<th>ebookPrice</th>
-			<td><%=ebook.getEbookPrice()%></td>
-			<th>updateDate</th>
-			<td><%=ebook.getUpdateDate()%></td>
+			<td><%=oem.getEbook().getEbookCompany()%></td>
 		</tr>
 	</table>
-	<a class="btn btn-info" href="<%=request.getContextPath()%>/admin/selectEbookList.jsp">뒤로가기</a>
+	<a class="btn btn-info" href="<%=request.getContextPath()%>/admin/selectOrderListByAdmin.jsp">뒤로가기</a>
 </div>
 </body>
 </html>

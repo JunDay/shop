@@ -11,6 +11,27 @@ import vo.*;
 
 public class NoticeDao {
 	
+	/* [공통] 공지사항의 총 수 출력 */
+	public int totalNoticeCount() throws ClassNotFoundException, SQLException {
+		System.out.println("+[Debug] \"Started\" | NoticeDao.totalNoticeCount()");
+		int totalCount = 0 ;
+		//db접속 메소드 호출
+		DBUtil dbUtil = new DBUtil();
+		Connection conn = dbUtil.getConnection();
+		
+		String sql = "SELECT COUNT(*) FROM notice";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		System.out.println(" [Debug] stmt : \""+stmt +"\" | NoticeDao.totalNoticeCount()");
+		
+		ResultSet rs= stmt.executeQuery();
+		
+		while(rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+		
+		return totalCount;
+	}
+	
 	/* [관리자] 공지사항 수정 */
 	public void updateNotice(Notice notice) throws ClassNotFoundException, SQLException {
 		System.out.println("+[Debug] \"Started\" | NoticeDao.updatNotice()");

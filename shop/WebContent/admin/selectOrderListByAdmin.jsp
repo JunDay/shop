@@ -76,7 +76,7 @@
 				for(OrderEbookMember oem : list){
 			%>
 					<tr>
-						<td><a href="<%=request.getContextPath()%>/admin/selectOrderOneByAdmin.jsp?orerNo=<%=oem.getOrder().getOrderNo() %>"><%=oem.getOrder().getOrderNo() %></a></td>
+						<td><a href="<%=request.getContextPath()%>/admin/selectOrderOneByAdmin.jsp?orderNo=<%=oem.getOrder().getOrderNo() %>"><%=oem.getOrder().getOrderNo() %></a></td>
 						<td><%=oem.getEbook().getEbookTitle() %></td>
 						<td><%=oem.getOrder().getOrderPrice() %></td>
 						<td><%=oem.getOrder().getOrderDate() %></td>
@@ -88,6 +88,7 @@
 		</tbody>
 	</table>
 	<!-- 6. 페이징 출력 -->
+	<div align="center" style="margin:30px;">
 	<%
 	// 6-1. 총 ebook의 수
 	int totalCount = orderDao.totalOrderCount();
@@ -115,7 +116,7 @@
 	// 6-6. 이전 버튼 출력
 	if(startPage > displayPage){
 	%>
-		<a href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=startPage-displayPage%>">이전</a>
+		<a class="btn btn-dark" href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=startPage-displayPage%>">이전</a>
 	<%
 	}
 
@@ -123,11 +124,11 @@
 	for(int i=startPage; i<=endPage; i++) {
 		if(i<lastPage){
 	%>
-			<a href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=i%>"><%=i%></a>
+			<a class="btn btn-secondary" href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=i%>"><%=i%></a>
 	<%
 		} else if(endPage>lastPage){
 	%>
-			<a href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=i%>"><%=i%></a>
+			<a class="btn btn-secondary" href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=i%>"><%=i%></a>
 	<%	
 			break;
 		}
@@ -136,10 +137,11 @@
 	// 6-8. 다음 버튼
 	if(endPage < lastPage){
 	%>
-		<a href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=startPage+displayPage%>">다음</a>
+		<a class="btn btn-dark" href="<%=request.getContextPath()%>/admin/selectOrderList.jsp?currentPage=<%=startPage+displayPage%>">다음</a>
 	<%
 	}
 	%>
+	</div>
 </div>
 </body>
 </html>

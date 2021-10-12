@@ -37,7 +37,7 @@
 		<h1>[공통] Q&A 목록 출력</h1>
 		<p>Q&A 목록 출력</p>
 	</div>
-	<h2>공지사항</h2>
+	<h2>Q&A</h2>
 	<div align="right"><a class="btn btn-primary" href="<%=request.getContextPath()%>/insertQnaForm.jsp">Q&A작성</a></div>
 	<table class="table table-borderless" width="90%">
 		<tr>

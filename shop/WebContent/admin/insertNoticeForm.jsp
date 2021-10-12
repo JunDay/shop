@@ -65,9 +65,11 @@
 		$('#btn').click(function(){
 			if($('#noticeTitle').val() == ''){
 				alert('noticeTitle를 입력하세요.');
+				return;
 			}
 			if($('#noticeContent').val() == '') {
 				alert('noticeContent를 입력하세요.');
+				return;
 			}
 			$('#noticeForm').submit();
 		});
